@@ -1,0 +1,1926 @@
+\documentclass[
+  jou,
+  floatsintext,
+  longtable,
+  nolmodern,
+  notxfonts,
+  notimes,
+  colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{apa7}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+
+\usepackage[bidi=default]{babel}
+\babelprovide[main,import]{english}
+
+
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+
+\RequirePackage{longtable}
+\RequirePackage{threeparttablex}
+
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+	{0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+	{-.5em}%
+	{\normalfont\normalsize\bfseries\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{0.5em}%
+	{0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+	{-\z@\relax}%
+	{\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
+
+
+
+\usepackage{longtable, booktabs, multirow, multicol, colortbl, hhline, caption, array, float, xpatch}
+\usepackage{subcaption}
+
+
+\renewcommand\thesubfigure{\Alph{subfigure}}
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.7}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,theorems, breakable, skins}
+\usepackage{fontawesome5}
+
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{ACACAC}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582EC}
+\definecolor{quarto-callout-important-color-frame}{HTML}{D9534F}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{F0AD4E}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02B875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{FD7E14}
+
+%\newlength\Oldarrayrulewidth
+%\newlength\Oldtabcolsep
+
+
+\usepackage{hyperref}
+
+
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+
+
+\usepackage{newtx}
+
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+
+
+
+
+
+\title{The rational impression account of trust in science}
+
+
+\shorttitle{The rational impression account of trust in science}
+
+
+\usepackage{etoolbox}
+
+
+
+
+
+
+
+
+\authorsnames{Jan Pfänder,Hugo Mercier}
+
+
+
+
+
+\affiliation{
+{Institut Jean Nicod, Département d'études cognitives, ENS, EHESS, PSL
+University, CNRS, France}}
+
+
+
+
+\leftheader{Pfänder and Mercier}
+
+
+
+\abstract{bla }
+
+\keywords{trust in science, science literacy, deficit model}
+
+\authornote{\par{\addORCIDlink{Jan
+Pfänder}{0009-0009-4389-2807}}\par{\addORCIDlink{Hugo
+Mercier}{0000-0002-0575-7913}} 
+\par{ }
+\par{   The authors have no conflicts of interest to disclose.    }
+\par{Correspondence concerning this article should be addressed to Hugo
+Mercier, Email: \href{mailto:hugo.mercier@gmail.com}{hugo.mercier@gmail.com}}
+}
+
+\usepackage{pbalance}
+% \usepackage{float}
+\makeatletter
+\let\oldtpt\ThreePartTable
+\let\endoldtpt\endThreePartTable
+\def\ThreePartTable{\@ifnextchar[\ThreePartTable@i \ThreePartTable@ii}
+\def\ThreePartTable@i[#1]{\begin{figure}[!htbp]
+\onecolumn
+\begin{minipage}{0.485\textwidth}
+\oldtpt[#1]
+}
+\def\ThreePartTable@ii{\begin{figure}[!htbp]
+\onecolumn
+\begin{minipage}{0.48\textwidth}
+\oldtpt
+}
+\def\endThreePartTable{
+\endoldtpt
+\end{minipage}
+\twocolumn
+\end{figure}}
+\makeatother
+
+
+\makeatletter
+\let\endoldlt\endlongtable		
+\def\endlongtable{
+\hline
+\endoldlt}
+\makeatother
+
+\newenvironment{twocolumntable}% environment name
+{% begin code
+\begin{table*}[!htbp]%
+\onecolumn%
+}%
+{%
+\twocolumn%
+\end{table*}%
+}% end code
+
+\urlstyle{same}
+
+
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{placeins}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+% From https://tex.stackexchange.com/a/645996/211326
+%%% apa7 doesn't want to add appendix section titles in the toc
+%%% let's make it do it
+\makeatletter
+\xpatchcmd{\appendix}
+  {\par}
+  {\addcontentsline{toc}{section}{\@currentlabelname}\par}
+  {}{}
+\makeatother
+
+%% Disable longtable counter
+%% https://tex.stackexchange.com/a/248395/211326
+
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\LT@caption}
+  {\bgroup}
+  {\bgroup\global\LTpatch@captiontrue}
+  {}{}
+\patchcmd{\longtable}
+  {\par}
+  {\par\global\LTpatch@captionfalse}
+  {}{}
+\apptocmd{\endlongtable}
+  {\ifLTpatch@caption\else\addtocounter{table}{-1}\fi}
+  {}{}
+\newif\ifLTpatch@caption
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\setlength\LTleft{0pt}
+
+
+\section{Introduction}\label{introduction}
+
+Addressing important societal challenges, from fighting climate change
+to managing pandemics, is greatly facilitated by trust in science.
+Studies have demonstrated that individuals with higher levels of trust
+in science are more likely to accept the scientific consensus on global
+warming (\citeproc{ref-bogertEffectTrustScience2024}{Bogert et al.,
+2024}). These individuals are also more likely to engage in
+pro-environmental behavior and support climate policies
+(\citeproc{ref-colognaRoleTrustClimate2020}{Cologna \& Siegrist, 2020};
+\citeproc{ref-hornseyMetaanalysesDeterminantsOutcomes2016}{Hornsey et
+al., 2016}). Trust in science has also been shown to be positively
+associated with willingness to get vaccinated
+(\citeproc{ref-sturgisTrustScienceSocial2021}{Sturgis et al., 2021}; for
+Covid-19 in particular,
+\citeproc{ref-lindholtPublicAcceptanceCOVID192021}{Lindholt et al.,
+2021}). During the Covid-19 pandemic, a panel study in 12 countries
+found that trust in scientists was the strongest predictor of whether
+people followed public health guidelines, such as mask-wearing or social
+distancing (\citeproc{ref-alganTrustScientistsTimes2021}{Algan et al.,
+2021}). Similar results have been found by other studies (e.g., positive
+effects of trust in science on acceptance of social distancing in the
+US, \citeproc{ref-koetkeTrustScienceIncreases2021}{Koetke et al.,
+2021}).
+
+Given the individual and social cost of a lack of trust in science, most
+studies have focused on understanding why some people do not trust
+science. However, it also important to understand why most people do
+trust science: it is important theoretically, as this trust could result
+from very different processes--from blind deference to a rational
+assessment of scientific evidence; it is important practically, as,
+depending on why people do trust science, different interventions aimed
+at increasing trust in science could be conceived. Here, we argue that,
+even though people do not know much about science, their trust in
+science can still be rational.
+
+We start by reviewing work on explanations for variations in trust in
+science, work which has focused on why some people do not trust science.
+We argue that this work has not fully solved a basic puzzle: why do most
+people tend to trust science, in spite of knowing so little about it?
+
+To solve this puzzle, we then develop a `rational impression' account of
+trust in science. According to this account, people do not need a
+profound understanding or detailed knowledge of science, to perceive it
+as trustworthy. Instead, by appealing to basic cognitive mechanisms of
+information evaluation, science impresses people, who then mostly forget
+what had impressed them.
+
+\section{The puzzle of why people trust
+science}\label{the-puzzle-of-why-people-trust-science}
+
+A widely agreed-upon definition of trust is the willingness to be
+vulnerable to another party--whether an individual, a group, or an
+institution
+(\citeproc{ref-mayerIntegrativeModelOrganizational1995a}{Mayer et al.,
+1995}; \citeproc{ref-rousseauIntroductionSpecialTopic1998}{Rousseau et
+al., 1998}). Building on this idea, trust in science has been defined as
+``one's willingness to rely on science and scientists (as
+representatives of the system) despite having a bounded understanding of
+science'' (\citeproc{ref-wintterlinPredictingPublicTrust2022}{Wintterlin
+et al., 2022, p. 2}). This definition implies that trust in science goes
+beyond knowledge of science. Yet, the idea that knowledge of science is
+the primary cause of trust in--and more generally positive attitudes
+towards--science has long dominated research on public understanding of
+science (\citeproc{ref-bauerWhatCanWe2007}{Bauer et al., 2007}). This
+idea is widely known under the term ``deficit model'', because much of
+the literature attested to the public ``depressingly low levels of
+scientific knowledge'' that were assumed to be the principal cause of
+negative attitudes towards science
+(\citeproc{ref-sturgisScienceSocietyReEvaluating2004}{Sturgis \& Allum,
+2004, p. 56}).
+
+The deficit model has been widely criticized for idealizing of science
+and viewing the public as deficient: for implying that ``to know science
+is to love it'' (\citeproc{ref-bauerWhatCanWe2007}{Bauer et al., 2007})
+and for portraying science knowledge as ``superior to whatever
+`nonscientific' or `local' knowledge the public may (also) possess''
+(\citeproc{ref-gauchatCulturalAuthorityScience2011}{Gauchat, 2011}). The
+literature has since moved beyond the idea of science knowledge as the
+principle driver of trust in science. However, the focus on explaining a
+lack of trust, rather than trust, persists.
+
+Researchers have increasingly studied how people's values, world views,
+and identities shape their attitudes towards science
+(\citeproc{ref-hornseyAttitudeRootsJiu2017a}{Hornsey \& Fielding, 2017};
+\citeproc{ref-lewandowskyWorldviewmotivatedRejectionScience2021}{Lewandowsky
+\& Oberauer, 2021}). The psychological literature has focused on
+explaining negative attitudes towards science with motivated
+reasoning--selecting and interpreting information to match one's
+existing beliefs or behaviors
+(\citeproc{ref-hornseyWhyFactsAre2020}{Hornsey, 2020};
+\citeproc{ref-lewandowskyRoleConspiracistIdeation2013}{Lewandowsky et
+al., 2013};
+\citeproc{ref-lewandowskyMotivatedRejectionScience2016}{Lewandowsky \&
+Oberauer, 2016}). This research mostly suggests that certain
+psychological traits, such as a social dominance orientation, or a
+tendency of engaging in conspiracy thinking, lead people to reject
+science. Arguments on a general conspiratory thinking style as one of
+the root causes of science rejection shift the debate, to some extent,
+from a knowledge deficit to a broader reasoning deficit
+(\citeproc{ref-hornseyAttitudeRootsJiu2017a}{Hornsey \& Fielding, 2017};
+\citeproc{ref-rutjensConspiracyBeliefsScience2022}{Rutjens \& Većkalov,
+2022})\footnote{Note that in these studies, conspiracy thinking is
+  conceived of as a general psychological trait, i.e.~a general a way of
+  thinking. For a distinction between general conspiracist worldviews
+  and conspiracy beliefs about science specifically, see Rutjens and
+  Većkalov (\citeproc{ref-rutjensConspiracyBeliefsScience2022}{2022}).}.
+
+Motivated reasoning accounts have been popular in light of accumulating
+evidence in the US for a widening partisan gap regarding trust in
+science, with Republicans trusting less and Democrats trusting more
+(\citeproc{ref-gauchatPoliticizationSciencePublic2012}{Gauchat, 2012};
+\citeproc{ref-krauseTrendsAmericansTrust2019a}{Krause et al., 2019};
+\citeproc{ref-leePartyPolarizationTrust2021}{Lee, 2021}). Contrary to
+what the deficit model would suggest, some influential work on motivated
+reasoning has shown that partisan-driven rejection of science does not
+appear to be the result of a lack of cognitive sophistication: Kahan et
+al. (\citeproc{ref-kahanPolarizingImpactScience2012}{2012}) have shown
+that greater science literacy was associated with more polarized beliefs
+on climate change. Drummond and Fischhoff
+(\citeproc{ref-drummondIndividualsGreaterScience2017}{2017}) have
+extended these findings to other controversial science topics, namely
+stem cell research and evolution: they show that both greater science
+literacy and education are associated with more polarized beliefs on
+these topics. However, this phenomenon that ``people with high reasoning
+capacity will use that capacity selectively to process information in a
+manner that protects their own valued beliefs''
+(\citeproc{ref-perssonPreregisteredReplicationMotivated2021}{Persson et
+al., 2021, p. 1}), known under the term `motivated numeracy', has
+largely failed to replicate
+(\citeproc{ref-hutmacherMotivatedReasoningClimate2024}{Hutmacher et al.,
+2024};
+\citeproc{ref-perssonPreregisteredReplicationMotivated2021}{Persson et
+al., 2021}; \citeproc{ref-stagnaroNoAssociationNumerical2023a}{Stagnaro
+et al., 2023}). Other studies, focusing on the case of climate change,
+have argued that partisan divides might simply be the result of bayesian
+information updating, rather than motivated reasoning
+(\citeproc{ref-bayesMotivatedReasoningClimate2021}{Bayes \& Druckman,
+2021}; \citeproc{ref-druckmanEvidenceMotivatedReasoning2019}{Druckman \&
+McGrath, 2019}).
+
+Since the Covid-19 pandemic, the role of misinformation in fostering
+distrust in science has been increasingly studied
+(\citeproc{ref-druckmanThreatsSciencePoliticization2022}{Druckman,
+2022};
+\citeproc{ref-nationalacademiesofsciencesUnderstandingAddressingMisinformation2024}{National
+Academies of Sciences, 2024};
+\citeproc{ref-scheufeleScienceAudiencesMisinformation2019}{Scheufele \&
+Krause, 2019}). For this literature, by contrast with the deficit model,
+the problem of trust in science is less a lack of information, and more
+the abundance of harmful information.
+
+The deficit model proposed a content-based explanation of trust: people
+would trust science because of their knowledge and understanding of
+science. Perhaps in response to this, recent literature in science
+communication has shifted the focus on source-based explanations of
+trust: from science knowledge to perceptions of scientists. This work
+has established that people evaluate scientists along different
+dimensions
+(\citeproc{ref-intemannScienceCommunicationPublic2023}{Intemann, 2023}),
+including competence, but also also integrity, benevolence or openness
+(\citeproc{ref-besleyReassessingVariablesUsed2021a}{Besley et al.,
+2021}; \citeproc{ref-hendriksMeasuringLaypeoplesTrust2015}{Hendriks et
+al., 2015}). This literature suggests that, for enhancing trust in
+science, the latter, warmth-related (i.e.~other than competence)
+dimensions could be particularly relevant
+(\citeproc{ref-fiskeGainingTrustWell2014}{Fiske \& Dupree, 2014}). The
+idea is that people already perceive scientists as very competent, but
+not as very warm, thus offering a greater margin for improvement.
+
+Another explanation for distrust towards science is the \emph{alienation
+model} (\citeproc{ref-gauchatCulturalAuthorityScience2011}{Gauchat,
+2011}). According to this model, the ``public disassociation with
+science is a symptom of a general disenchantment with late modernity,
+mainly, the limitations associated with codified expertise, rational
+bureaucracy, and institutional authority''
+(\citeproc{ref-gauchatCulturalAuthorityScience2011}{Gauchat, 2011, p.
+2}). This explanation builds on the work of social theorists
+(\citeproc{ref-beckRiskSocietyNew1992}{Beck, 1992};
+\citeproc{ref-giddensModernitySelfidentitySelf1991}{Giddens, 1991};
+\citeproc{ref-habermasJurgenHabermasSociety1989}{Habermas, 1989}; see
+\citeproc{ref-gauchatCulturalAuthorityScience2011}{Gauchat, 2011} for an
+overview) who suggested that a modern, complex world increasingly
+requires expertise, and thus shapes institutions of knowledge elites.
+People who are not part of these institutions experience a lack of
+agency, resulting in a feeling of alienation.
+
+On the whole, the literature on public trust in science focuses not on
+explaining why people do trust science, but on why they do not, or not
+enough. As reviews of science-society research have noted, the
+literature continues to operate in ``deficit'' paradigms
+(\citeproc{ref-bauerWhatCanWe2007}{Bauer et al., 2007};
+\citeproc{ref-scheufeleThirtyYearsScience2022}{Scheufele, 2022}) which
+tend to overlook the elevated levels of trust (see next section).
+
+\subsection{People tend to trust
+science}\label{people-tend-to-trust-science}
+
+Across the globe, most people do trust science, at least to some extent.
+A recent study in 68 countries found that, across the globe, trust in
+scientists was ``moderately high'' (mean = 3.62; sd= 0.70; Scale: 1 =
+very low, 2 = somewhat low, 3 = neither high nor low, 4 = somewhat high,
+5 = very high), with not a single country below midpoint trust
+(\citeproc{ref-colognaTrustScientistsTheir2025}{Cologna et al., 2025}).
+Long-term global data on trust in science across time is sparse. Yet,
+the available data suggests, if anything, a recent increase of trust in
+science: In 2018, the Wellcome Global Monitor (WGM) surveyed of over
+140000 people in over 140 countries on trust in science
+(\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2018}{Wellcome
+Global Monitor, 2018}). In 2020, during the first year of the Covid
+pandemic and before vaccines were widely available, a follow-up survey
+was run in 113 countries, involving 119000 participants
+(\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2020}{Wellcome
+Global Monitor, 2020}). Between these two surveys, on average, trust in
+science has risen
+(\citeproc{ref-wellcomeglobalmonitorPublicTrustScientists2021}{Wellcome
+Global Monitor, 2021}): In 2020, 41\% (32\% in 2018) of respondents said
+they trust science a lot, 39\% (45\% in 2018) said they trust science to
+some extent, 13\% (also 13\% in 2018) said they trust science ``not much
+or not at all'', and 7\% (10\% in 2018) answered ``don't know''. In the
+US, where long term data is available from the US General Social Survey
+(GSS), this public trust appears to be both remarkably stable and
+elevated relative to other institutions
+(\citeproc{ref-funkScienceScientistsHeld2020}{Funk et al., 2020};
+\citeproc{ref-funkPublicConfidenceScientists2020}{Funk \& Kennedy,
+2020}; \citeproc{ref-smithTrendsPublicAttitudes2013}{Smith \& Son,
+2013}): From the early 1970s to 2022, the currently latest year
+available in the GSS, on average 40\% of Americans say they have a great
+deal of confidence in the scientific community. This is the second
+highest score (just behind the military) among 13 institutions listed in
+the GSS, including, e.g., the government, press, organized religion or
+medicine. Note, however, that the most recent polls suggest a drop in
+trust in science in the US (\citeproc{ref-lupiaTrendsUSPublic2024}{Lupia
+et al., 2024}).
+
+\subsection{Is trust in science
+rational?}\label{is-trust-in-science-rational}
+
+Both the deficit model and the other existing accounts focus on why some
+people do not trust science (enough). Implicitly, this literature takes
+trust in science for granted, as a normatively rational default.
+However, even if we agree that the scientific consensus is accurate, and
+that a decently high level of trust in science is warranted, that does
+not mean that the public's trust in science is automatically rational.
+People may trust science for reasons that have little to do with
+evidence or epistemic justification. While we are not aware that this
+argument has been explicitly made in the trust-in-science literature,
+different fields of research offer potential theoretical grounds.
+
+In social psychology, Milgram
+(\citeproc{ref-milgramObedienceAuthorityExperimental1974}{1974}) 's
+obedience experiments have famously been interpreted to demonstrate that
+people blindly defer to authorities, even when doing so conflicts with
+their own moral intuitions. This interpretation of blind deference has
+been contested (\citeproc{ref-mercierHowGullibleAre2017}{Mercier,
+2017}); yet, in cases where people deferred, they were particularly
+sensitive to cues of scientific authority
+(\citeproc{ref-haslamContestingNatureConformity2012}{Haslam \& Reicher,
+2012}). Research on normative conformity (e.g.,
+\citeproc{ref-aschStudiesIndependenceConformity1956}{Asch, 1956} 's
+conformity experiments) has shown that in certain contexts, people may
+align their views with group norms, not because they have independently
+evaluated the evidence, but because they wish to fit in or avoid social
+sanctions (see \citeproc{ref-mercierHowGullibleAre2017}{Mercier, 2017}
+for an argument that these cases of conformity are, in fact, pretty
+rare). Trust in science could, therefore, in some cases be the result of
+deference to authority or social conformity rather than critical
+evaluation of scientific claims.
+
+From a sociological perspective, especially in Bourdieu's framework,
+trust in science may be strongly influenced by \emph{habitus}---a system
+of dispositions shaped by one's social class and cultural background
+(\citeproc{ref-bormannTrustTrustingPractices2019}{Bormann \& Thies,
+2019}). Rather than a reasoned appraisal of science's trustworthiness,
+trust might result from internalized norms. In line with this argument,
+Archer et al. (\citeproc{ref-archerScienceCapitalConceptual2015}{2015})
+show that school children aged 11-15 years already differ considerably
+in their ``science capital''-an index of several questions pertaining to
+how much they value and engage with science. These differences were
+associated with differences in cultural capital (e.g.~parental
+university attendance), gender, and ethnicity.
+
+Finally, research in cultural evolution highlights the role of
+\emph{prestige bias}: humans are inclined to adopt beliefs and behaviors
+from individuals or institutions perceived as prestigious. This process
+is not rational, because humans only need to identify who is
+prestigious, and not why.
+
+Deference to authority, social conformity, habitus or prestige bias are
+possible explanations of how public trust in science could stem from
+irrational information processing. But what would rational trust in
+science look like? Implicitly, the deficit model has made this case:
+knowledge of science should convince people of its epistemic qualities,
+and thus elicit trust. However, as we will showcase in the next section,
+this explanation does not align with the data: People do not know much
+about science, and correlations between science knowledge and trust are,
+if present, weak.
+
+\subsection{People do not know much about
+science}\label{people-do-not-know-much-about-science}
+
+The deficit model implies that science knowledge is the main cause of
+trust in science. Accordingly, the elevated levels of trust in science
+should be matched by elevated levels of science knowledge. But this is
+not the case.
+
+Early attempts of measuring science knowledge have developed what is
+known as the ``Oxford scale'' (Table~\ref{tbl-oxford}\footnote{The
+  original scale proposed by Durant et al.
+  (\citeproc{ref-durantPublicUnderstandingScience1989}{1989}) comprised
+  20-items. Several reduced versions of this have been used in different
+  survey projects and studies since then. For example, Miller
+  (\citeproc{ref-millerMeasurementCivicScientific1998a}{1998}) reports
+  that a Eurobarometer in 1992 included only 9, and a Science and
+  Engineering Indicator survey in 1995 only 10 of these items. Gauchat
+  (\citeproc{ref-gauchatCulturalAuthorityScience2011}{2011}) reports
+  relying on a 14-item scale based on several Science and Engineering
+  Indicators surveys included in the GSS (but does not provide an
+  overview of the included items).}) to measure science knowledge--a set
+of specific true/false or multiple-choice questions about basic science
+facts.\footnote{The meta-analysis included two types of studies: one
+  that measured general scientific knowledge, and one that measured
+  knowledge specific to biology and genetics} As the name suggests, this
+measure was developed by scholars associated with the University of
+Oxford in the late 1980s, in collaboration with Jon D. Miller, a pioneer
+in research on science literacy in the US
+(\citeproc{ref-durantPublicUnderstandingScience1989}{Durant et al.,
+1989}). The Oxford scale remains popular: different versions of it have
+been used in large-scale survey projects, including several
+Eurobarometer surveys, as well as in the National Science Foundation's
+(NSF) ``Science and Engineering Indicators'' surveys in the US
+(\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{National
+Academies of Sciences, Engineering, and Medicine, 2016}). Survey results
+from the Oxford scale have been taken to showcase a science knowledge
+deficit among the public. For example, from the first surveys in which
+they were used, Durant et al.
+(\citeproc{ref-durantPublicUnderstandingScience1989}{1989}) (p.11)
+report that only ``34\% of Britons and 46\% of Americans appeared to
+know that the Earth goes round the Sun once a year, and just 28\% of
+Britons and 25\% of Americans knew that antibiotics are ineffective
+against viruses''. According to the National Academies of Sciences,
+Engineering, and Medicine
+(\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{2016}),
+performance on the Oxford scale items in the US has been ``fairly stable
+across 2 decades''
+(\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{National
+Academies of Sciences, Engineering, and Medicine, 2016, p.
+51})\footnote{Note that for this trend scale, the National Science Board
+  who publishes results from the Science and Engineering Indicators
+  selected a subset of 9 of the items shown in Table~\ref{tbl-oxford}.}.
+
+\begin{twocolumntable}
+
+\begin{longtable}[t]{>{\raggedleft\arraybackslash}p{2em}>{\raggedright\arraybackslash}p{40em}}
+
+\caption{\label{tbl-oxford}}
+
+\tabularnewline
+
+\toprule
+ & \\
+\midrule
+1 & The center of the Earth is very hot. (True)\\
+2 & The continents on which we live have been moving their locations for millions of years and will continue to move in the future. (True)\\
+3 & Does the Earth go around the Sun, or does the Sun go around the Earth? (Earth around Sun)\\
+4 & How long does it take for the Earth to go around the Sun? (One year)\textbackslash{}*\\
+5 & All radioactivity is man-made. (False)\\
+\addlinespace
+6 & It is the father’s gene that decides whether the baby is a boy or a girl. (True)\\
+7 & Antibiotics kill viruses as well as bacteria. (False)\\
+8 & Electrons are smaller than atoms. (True)\\
+9 & Lasers work by focusing sound waves. (False)\\
+10 & Human beings, as we know them today, developed from earlier species of animals. (True)\\
+\addlinespace
+11 & The universe began with a huge explosion. (True)\\
+\bottomrule
+\multicolumn{2}{l}{\rule{0pt}{1em}*Only asked if previous question was answered correctly.}\\
+
+\end{longtable}
+
+An 11-item version of the Oxford-scale, as reported in a comprehensive
+review of the literature on scientific literacy
+(\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{National
+Academies of Sciences, Engineering, and Medicine, 2016})
+
+\end{twocolumntable}
+
+The Oxford scale has received various forms of criticism, ranging from
+minor concerns for being--ironically, in light of the bad
+performance--too easy to answer
+(\citeproc{ref-kahanClimateScienceCommunicationMeasurement2015}{Kahan,
+2015}), to the fundamental critique that it only captures factual recall
+(\citeproc{ref-bauerWhatCanWe2007}{Bauer et al., 2007};
+\citeproc{ref-pardoCognitiveDimensionPublic2004}{Pardo \& Calvo, 2004}).
+What should actually matter for trust, according to this fundamental
+critique, is a different kind of knowledge, namely an institutional and
+methodological understanding of how science works.
+
+The literature on science literacy goes well beyond Oxford-scale type,
+factual measures of trust in science. Even the creators of the Oxford
+scale were, to some extent, aware of its limitations
+(\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{National
+Academies of Sciences, Engineering, and Medicine, 2016}). They never
+intended the Oxford scale items to serve as a comprehensive measure of
+science literacy. For example, Durant et al.
+(\citeproc{ref-durantPublicUnderstandingScience1989}{1989}) also
+developed a scale of ``understanding of processes of scientific
+inquiry''--several multiple-choice questions about the scientific method
+and basic concepts of probability. Miller
+(\citeproc{ref-millerPublicUnderstandingAttitudes2004}{2004}) viewed a
+scientifically literate citizen as someone who has both a ``(1) a basic
+vocabulary of scientific terms and constructs; and (2) a general
+understanding of the nature of scientific inquiry.'' His measure of
+science literacy included open-ended questions, for example on what
+people understand as the meaning of scientific study
+(\citeproc{ref-millerMeasurementCivicScientific1998a}{Miller, 1998}).
+
+However, these measures have hardly drawn a more positive image of the
+public's knowledge of science: Using an index of various understanding
+questions, Miller
+(\citeproc{ref-millerPublicUnderstandingAttitudes2004}{2004}) (p.~288)
+concluded that ``approximately 10 percent of US adults qualified as
+civic scientifically literate in the late 1980s and early 1990s, but
+this proportion increased to 17 percent in 1999''. Miller described
+that, according to his measure, someone qualifies as scientifically
+literate if they possess ``the level of skill required to read most of
+the articles in the Tuesday science section of The New York Times, watch
+and understand most episodes of Nova, or read and understand many of the
+popular science books sold in bookstores today''
+(\citeproc{ref-millerPublicUnderstandingAttitudes2004}{Miller, 2004, p.
+288}).
+
+More recent data suggest that science literacy in the US may have
+improved slightly since Miller's assessment during the early 2000s, but
+it still remains rather low. Based on results from the 2018 US Science
+\& Engineering Indicators, Scheufele and Krause
+(\citeproc{ref-scheufeleScienceAudiencesMisinformation2019}{2019})
+(p.~7663) report that ``one in three Americans (36\%) misunderstood the
+concept of probability; half of the population (49\%) was unable to
+provide a correct description of a scientific experiment; and three in
+four (77\%) were unable to describe the idea of a scientific study.''
+
+The 2024 US Science \& Engineering Indicators, based on data from the
+Pew Research Center's American Trends Panel (ATP) from 2020, report that
+``60\% of U.S. adults could correctly note that a control group can be
+useful in making sense of study results'' and that ``only half of U.S.
+adults (50\%) could correctly identify a scientific hypothesis''
+(\citeproc{ref-nationalscienceboardnationalsciencefoundationScienceTechnologyPublic2024}{National
+Science Board, National Science Foundation, 2024, p. 24}).
+
+\subsection{A weak correlation between knowledge and
+trust}\label{a-weak-correlation-between-knowledge-and-trust}
+
+So far, we have contrasted the elevated levels of trust with the low
+levels of science knowledge. This is only indirect evidence for a weak
+association between the two. More direct evidence on this association
+comes with two major limitations: First, direct evidence is based mostly
+on narrow, factual knowledge as measured by the Oxford scale, and not on
+a broader, institutional understanding of science. Second, the relevant
+studies have typically assessed attitudes towards science more broadly,
+rather than trust in science in particular. In a seminal meta-analysis
+Allum et al. (\citeproc{ref-allumScienceKnowledgeAttitudes2008}{2008})
+found that Oxford scale type science knowledge was only weakly
+associated with attitudes towards science. Moreover, this weak
+association only held for general attitudes--for attitudes towards
+specific contentious science topics (e.g., climate change), the study
+did not find an association.
+
+Another limitation of the evidence of a weak association between trust
+in science and science knowledge presented so far is that it is--to a
+large extent--based on data from the US and, to some extent, Europe.
+However, a recent global study points towards a similar conclusion:
+Cologna et al. (\citeproc{ref-colognaTrustScientistsTheir2025}{2025})
+tested the relationship between national science literacy scores, based
+on the Program for International Student Assessment (PISA), and national
+average trust in scientists for the 68 countries included in their
+study. They found no statistically significant association.
+
+This section has established that public trust in science is relatively
+high, but that knowledge and understanding of science do not seem to be
+strong determinants of this trust. Does this mean that trust in science
+is irrational? In the next section we argue that no, not necessarily.
+
+\section{The rational impression account of trust in
+science}\label{the-rational-impression-account-of-trust-in-science}
+
+In this section, we develop a `rational impression' account of trust in
+science, according to which people trust science because they have been
+impressed by it. This impression of trust persists even after knowledge
+of the specific content has vanished. The account builds on two basic
+mechanisms of information evaluation: First, if something is highly
+consensual, it is likely to be true. This is particularly relevant when
+people lack relevant background knowledge to evaluate claims for
+themselves, as is often the case in science. Second, if someone finds
+out something that is hard-to-know, we tend to be impressed by it, if we
+deem it true. This impression makes us infer that the person is
+competent, a crucial component of trustworthiness. However, it is hard
+or even impossible to recall exactly how we formed this impression.
+
+\subsection{People infer accuracy from
+consensus}\label{people-infer-accuracy-from-consensus}
+
+In order to make the best of communicated information, animals need to
+be able to evaluate it, i.e.~being able to distinguish inaccurate and
+harmful from accurate and beneficial information
+(\citeproc{ref-maynard-smithAnimalSignals2003}{Maynard-Smith \& Harper,
+2003}). It has been argued that humans have evolved a suite of cognitive
+mechanisms to serve this function
+(\citeproc{ref-mercierNotBornYesterday2020}{Mercier, 2020};
+\citeproc{ref-sperberEpistemicVigilance2010}{Sperber et al., 2010}). In
+particular, we rely on cues of an informant's trustworthiness, and check
+the plausibility of an information against our background knowledge.
+
+In the case of science, reliable cues and background information are
+scarce: people generally have little first-hand information to evaluate
+individual scientists' trustworthiness, because they don't know
+scientists personally. People also largely lack relevant background
+knowledge to evaluate the plausibility of scientific findings.
+Sometimes, to a certain extent, people might be able to judge the
+accuracy of scientific findings for themselves, for example when they
+are exposed to accessible and convincing explanations in school
+(\citeproc{ref-lombrozoSimplicityProbabilityCausal2007}{Lombrozo, 2007};
+\citeproc{ref-readExplanatoryCoherenceSocial1993}{Read \&
+Marcus-Newhall, 1993}; for a review, see
+\citeproc{ref-lombrozoStructureFunctionExplanations2006}{Lombrozo,
+2006}). But for most scientific research, people cannot possibly
+evaluate the quality of the information for themselves, let alone make
+their own observations (e.g.~quantum mechanics, genes).
+
+An additional way to evaluate whether something is true or not is to
+aggregate opinions. It has been shown that, when no better information
+is available, people rely on majority heuristics: the more others agree
+on something, the more likely we are to believe them to be right
+(\citeproc{ref-mercierMajorityRulesHow2019}{Mercier \& Morin, 2019}).
+Literature on the wisdom of crowds has shown that this inference--from
+convergence of opinions to accuracy--is often appropriate (see e.g.,
+\citeproc{ref-hastieRobustBeautyMajority2005}{Hastie \& Kameda, 2005}).
+In non-science related contexts, it has been shown that people go even
+further and infer that others are more competent, the more they agree
+with each other (\citeproc{ref-pfanderHowWiseCrowd2025}{Pfänder, De
+Courson, et al., 2025}). In these experiments, participants were
+deprived of relevant background knowledge and were told that the others
+were answering independently of each other.
+
+More indirect evidence suggests that people make this inference also in
+the context of science: Pfänder and Mercier
+(\citeproc{ref-pfanderFrenchTrustMore2025}{2025}) showed that in France,
+people trust scientists more when they work in disciplines that people
+perceive as more consensual. Yet more suggestive evidence comes from a
+popular psychological model, the ``gateway model''. The model suggests
+that informing people about the scientific consensus on specific issues
+acts as a gateway to change their beliefs on these issues
+(\citeproc{ref-vanderlindenGatewayBeliefModel2021}{Linden, 2021}).
+Studies have demonstrated the effectiveness of consensus messaging in
+changing people's beliefs on contentious science topics such as climate
+change (\citeproc{ref-veckalov27countryTestCommunicating2024}{Većkalov
+et al., 2024}) or vaccination
+(\citeproc{ref-salmonVaccineHesitancyCauses2015}{Salmon et al., 2015};
+for an overview of results on vaccination, climate change, and
+genetically modified food, see
+\citeproc{ref-vanstekelenburgScientificConsensusCommunicationContested2022}{Van
+Stekelenburg et al., 2022}). This evidence is only suggestive, however,
+because the fact that consensus changes people's beliefs or attitudes
+does not necessarily require enhanced trust. An alternative explanation,
+for example, is normative conformity-that is, when people follow the
+majority because of social pressure rather than a belief that the
+majority is correct (\citeproc{ref-mercierMajorityRulesHow2019}{Mercier
+\& Morin, 2019}).\footnote{However, an accuracy inference seems to be
+  the more plausible mechanism here: Studies on consensus messaging do
+  not seem to be settings of high social pressure that we might expect
+  to produce instances of normative conformity, compared to, for
+  instance, the famous Asch experiments
+  (\citeproc{ref-aschStudiesIndependenceConformity1956}{Asch, 1956}).}
+
+In the absence of other reliable cues and background knowledge,
+inferences from consensus are likely to be given considerable weight in
+a cognitive system of epistemic vigilance. In the case of science, this
+weight should play in favor of science's perceived trustworthiness: It
+has been argued that, by contrast with other intellectual enterprises,
+consensus is the defining trait of science
+(\citeproc{ref-collinsSociologyPhilosophiesGlobal2002}{Collins, 2002}).
+Not only do scientists agree on things, but they agree on impressive
+things--things that would be impossible for any individual to ever
+uncover for themselves.
+
+\subsection{People trust but forget impressive
+science}\label{people-trust-but-forget-impressive-science}
+
+People use the degree of consensus as a cue to infer whether an
+information is accurate, and, to some extent, whether the informants are
+competent. However, this latter inference on the informants' competence
+should strongly depend on how impressive the information is.
+
+For an information to be impressive, at least two criteria should be
+met: (i) there is reason to believe it is true, and (ii) it is perceived
+as hard to uncover. In the case of science, perceived consensus might be
+the main relevant cue for (i), and (ii) can be mostly taken for granted.
+For example, most people would probably only be mildly impressed by
+someone telling them that a given tree has exactly 110201 leaves. Even
+though obtaining this information implies an exhausting counting effort,
+everyone in principle knows how to do it. By contrast, finding out that
+it takes light
+\href{https://imagine.gsfc.nasa.gov/features/cosmic/milkyway_info.html}{approximately
+100,000 years to travel from one end of the Milky Way to the other} is
+probably impressive to most people, as they would not know how such a
+distance can be measured.
+
+Outside the realm of science, with trivia questions, it has been shown
+that people have accurate perceptions of whether something is hard to
+know or not, and that they use this information to infer someone's
+competence (\citeproc{ref-dubourgUsingNestedStructure2025}{Dubourg et
+al., 2025}): knowing a rare piece of information indicates a high
+likelihood of knowing more information in the same domain.
+
+In the case of science, Pfänder, Rouilhan, et al.
+(\citeproc{ref-pfanderTrustingForgettingImpressive2025}{2025}) showed
+that reading about impressive scientific findings increased
+participants' perceptions of both the scientists' competence and the
+trustworthiness of their discipline. At the same time, participants
+forgot almost immediately about the specific content that generated
+these impressions.
+
+This forgetting could explain the low levels of science knowledge. We
+commonly form impressions of the people around us while forgetting the
+details of how we formed these impressions: If a colleague fixes our
+computer, we might forget exactly how they fixed it, yet remember that
+they are good at fixing computers. As an extreme example, patients with
+severe amnesia can continue to experience emotions linked to events they
+could not recall
+(\citeproc{ref-feinsteinSustainedExperienceEmotion2010}{Feinstein et
+al., 2010}). In the context of science, Liquin and Lombrozo
+(\citeproc{ref-liquinMotivatedLearnAccount2022}{2022}) have shown that
+while people find some science-related explanations more satisfying than
+others, this did not predict how well they could recall the explanations
+shortly after, suggesting that impressions and knowledge formation can
+be quite detached.
+
+\subsection{Additional predictions of the rational impressions
+account}\label{additional-predictions-of-the-rational-impressions-account}
+
+The rational impressions account makes several additional predictions.
+First, competence should be the main dimension of scientists'
+trustworthiness. In social psychology, a popular model suggests that
+people evaluate others along two fundamental dimensions: competence and
+warmth (\citeproc{ref-cuddyWarmthCompetenceUniversal2008}{Cuddy et al.,
+2008}). Similarly, for trust in scientists, researchers have
+distinguished between an epistemological and an ethical dimension
+(\citeproc{ref-intemannScienceCommunicationPublic2023}{Intemann, 2023};
+\citeproc{ref-wilholtEpistemicTrustScience2013}{Wilholt, 2013}).
+Sometimes, researchers make more fine-grained distinctions: For example,
+Hendriks et al.
+(\citeproc{ref-hendriksMeasuringLaypeoplesTrust2015}{2015}) have argued
+for three dimensions: expertise/competence, integrity, and benevolence.
+Besley et al. (\citeproc{ref-besleyReassessingVariablesUsed2021a}{2021})
+has suggested openness as an additional fourth dimension. Across these
+dimensions, anything but competence should be very hard to evaluate for
+people: there are relatively very few scientists in the world, and most
+people probably do not know any personally. The only other way they
+could judge scientists' character is through media coverage. But news on
+science--by contrast, for example, with news on politicians--mostly tend
+to concern the science, not the scientists. Besides, people consume very
+little news in general
+(\citeproc{ref-newmanDigitalNewsReport2023}{Newman et al., 2023}).
+Competence, however, can be judged based on the mechanisms of the
+rational impression account. Accordingly, scientists should score higher
+in competence evaluations than in other dimensions of trustworthiness.
+In line with this prediction, it has been shown that people perceive
+scientists as very competent, but not so much as warm
+(\citeproc{ref-fiskeGainingTrustWell2014}{Fiske \& Dupree, 2014}). A
+recent Pew survey found that 89\% of Americans viewed research
+scientists as intelligent, but only 65\% viewed them as honest, and only
+45\% described research scientists as good communicators
+(\citeproc{ref-kennedyPublicTrustScientists2024}{Kennedy \& Brian,
+2024}; see also \citeproc{ref-fiskeGainingTrustWell2014}{Fiske \&
+Dupree, 2014}). Beyond the US, a recent study confirmed this tendency on
+a global scale (\citeproc{ref-colognaTrustScientistsTheir2025}{Cologna
+et al., 2025}): People perceived scientists as highly competent, with
+78\% tending to believe that scientists are qualified to conduct
+high-impact research. By contrast, people held scientists in lower
+esteem with regards to their integrity and benevolence: Only 57\% of
+people tended to believe that most scientists are honest, and only 56\%
+tended to believe that most scientists are concerned about people's
+well-being.
+
+Second, education, and more precisely science education, should be the
+main correlate of trust in science. Since most people consume very
+little news (\citeproc{ref-newmanDigitalNewsReport2023}{Newman et al.,
+2023}), the bulk of exposure to science can be assumed to happen during
+education. Education, and in particular science education, has been
+consistently identified as one of the strongest correlates of trust in
+science (\citeproc{ref-noyScienceGoodEffects2019}{Noy \& O'Brien, 2019};
+\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2018}{Wellcome
+Global Monitor, 2018},
+\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2020}{2020}; but
+see \citeproc{ref-colognaTrustScientistsTheir2025}{Cologna et al., 2025}
+who only find a small positive relationship between tertiary education
+and trust in science). This is compatible with the fact that people,
+even those who received a science education, do not know much about
+science: if we assume that education has some causal effect on trust in
+science, this effect does not need to be driven by a pure transmission
+of knowledge and understanding (for a similar argument, see
+\citeproc{ref-bakEducationPublicAttitudes2001}{Bak, 2001}). The
+candidate mechanism proposed by the rational impression account is
+exposure to impressive scientific content. Students might not understand
+much of it, and potentially recall even less later on; but they might
+have been impressed by it, to the point that they come to perceive
+scientists as competent, and thus, everything else equal, as
+trustworthy. This impression might persist even when specific knowledge
+vanishes. In line with this, Motta
+(\citeproc{ref-mottaEnduringEffectScientific2018}{2018}) found that, in
+the US, the more children were interested in science at age 12--14
+years, the more they tended to trust in climate scientists in adulthood
+(mid thirties), irrespective of their political ideology.
+
+Third, people with a basic science education should trust essentially
+all of basic science. These people should have had the opportunity to
+form impressions of trustworthiness of science. This should have built a
+solid baseline of trust in science. People might deviate from this
+default and distrust science on certain specific science topics for
+other reasons, but they should trust most of science. This is in line
+with the finding that in the US, almost everyone--even people who say
+they don't trust science in general or who hold specific beliefs
+blatantly violating scientific knowledge (e.g.~that the earth is
+flat)--trusts almost all of basic science knowledge (e.g.~that electrons
+are smaller than atoms)
+(\citeproc{ref-pfanderQuasiuniversalAcceptanceBasic2025}{Pfänder,
+Kerzreho, et al., 2025}).
+
+\section{Discussion}\label{discussion}
+
+It has long been a puzzle to the deficit model--which suggests that
+trust in science is primarily driven by science knowledge--that
+knowledge of science is at best weakly associated with science attitudes
+(\citeproc{ref-allumScienceKnowledgeAttitudes2008}{Allum et al., 2008};
+\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{National
+Academies of Sciences, Engineering, and Medicine, 2016}). The rational
+impression account can make sense of this: it lays out how trusting
+science without recalling specific knowledge can be the result of a
+sound inference process, rooted in basic cognitive mechanisms of
+information evaluation.
+
+The account is compatible with the finding that education, and in
+particular science education, has been repeatedly identified as one of
+the strongest correlates of trust in science
+(\citeproc{ref-bakEducationPublicAttitudes2001}{Bak, 2001};
+\citeproc{ref-noyScienceGoodEffects2019}{Noy \& O'Brien, 2019};
+\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2018}{Wellcome
+Global Monitor, 2018},
+\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2020}{2020}; but
+see \citeproc{ref-colognaTrustScientistsTheir2025}{Cologna et al.,
+2025}). By contrast with the deficit model, it suggests that the main
+causal role of education for public trust in science is not transmission
+of knowledge and understanding, but impression generation.
+
+The rational impression account aligns with recent normative accounts of
+what makes science trustworthy. Instead of particular institutional
+features-certain methods, norms, or processes--these accounts argue that
+the trustworthiness of science lies in its diversity: Cartwright et al.
+(\citeproc{ref-cartwrightTangleScienceReliability2022}{2022}) make the
+case that scientific knowledge emerges from a ``tangle'' of results,
+relying on diverse research methods. Oreskes
+(\citeproc{ref-oreskesWhyTrustScience2019}{2019}) makes a similar case:
+She argues that scientific practice takes place in different scientific
+communities who rely on a variety of different research methods. Through
+some shared practices, in particular peer-review, these communities
+engage in critical dialogue. What makes scientific knowledge
+trustworthy, according to Oreskes, is when from this diversity of actors
+and methods, a consensus emerges. According to this view, to infer
+trustworthiness, people should have a representation of the diversity of
+science. The rational impression account is, in a way, less strict: it
+does not require a representation of diversity. It does require,
+however, that people have a representation of science as an institution
+of independent thinkers.
+
+The rational impressions account faces several limitations. First, it
+proposes a possible micro-level model of trust in science and should be
+seen as complementing, not competing with, macro-level processes that
+shape public trust in science. The rational impression account fits with
+a sociological literature investigating how ``individual cognition and
+practice establish and maintain institutional fields and status
+hierarchies, especially in the face of imperfect knowledge''
+(\citeproc{ref-gauchatCulturalCognitiveMappingScientific2018}{Gauchat \&
+Andrews, 2018, p. 569}). However, sociological macro-level accounts have
+described how trust in science is entangled with broader cultural and
+political dynamics. These accounts, like the individual-level accounts
+reviewed above, tend to focus on explaining distrust in science. For
+example, Gauchat
+(\citeproc{ref-gauchatCulturalAuthorityScience2011}{2011}) describes the
+`alienation model', according to which the ``public disassociation with
+science is a symptom of a general disenchantment with late modernity,
+mainly, the limitations associated with codified expertise, rational
+bureaucracy, and institutional authority''
+(\citeproc{ref-gauchatCulturalAuthorityScience2011}{Gauchat, 2011, p.
+2}). This explanation builds on the work of social theorists
+(\citeproc{ref-beckRiskSocietyNew1992}{Beck, 1992};
+\citeproc{ref-giddensModernitySelfidentitySelf1991}{Giddens, 1991};
+\citeproc{ref-habermasJurgenHabermasSociety1989}{Habermas, 1989}; see
+\citeproc{ref-gauchatCulturalAuthorityScience2011}{Gauchat, 2011} for an
+overview) who suggested that a modern, complex world increasingly
+requires expertise, and thus shapes institutions of knowledge elites.
+People who are not part of these institutions experience a lack of
+agency, resulting in a feeling of alienation. Similarly, Gauchat
+(\citeproc{ref-gauchatLegitimacyScience2023}{2023}) argues that
+politicization of science in the US needs to be seen in its broader
+cultural context. Precisely, according to Gauchat, science has enabled
+the authority of the modern regulatory state. Consequently, conservative
+distrust of science reflects deeper structural tensions with the
+institutions and rational--legal authority of modern governance. At the
+micro-level, this is consistent with research showing that right-wing
+authoritarian ideology is associated with distrust towards science and
+scientists (\citeproc{ref-kerrRightwingAuthoritarianismSocial2021}{Kerr
+\& Wilson, 2021}).
+
+A second limitation of the rational impression account is that it
+assumes people have a representation of science as consensual. However,
+in practice--with perhaps some exceptions, such as during the Covid-19
+pandemic--most people do not literally compare the opinions of different
+scientists for themselves and come to the conclusion that something is
+largely consensual. Where, then, could the representation of consensus
+possibly emerge? A plausible explanation, we believe, is that education
+fosters a representation of consensus: During education, in particular
+during early education, knowledge is typically presented as simply the
+result of science--a seemingly unanimous enterprise that produces
+knowledge. School books hardly teach about historical science
+controversies, suggest uncertainty around scientific findings, or cover
+cutting-edge research where disagreements are the norm. This could
+induce a default consensus assumption in people's perceptions of
+science. However, this argument is of course only speculative.
+
+Third, the rational impression account cannot explain, for example, why
+people with no education, and thus presumably very little exposure to
+science, have some trust in science
+(\citeproc{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2018}{Wellcome
+Global Monitor, 2018}). A possible explanation could be two step
+effects, via some educated people who trust science whom they trust.
+
+Fourth, conversely, the account also cannot explain why, in a context of
+the global north, where essentially everyone has been exposed to science
+through a basic science education, some people do not trust some aspects
+of science, or say they don't trust science in general (even if that is
+not really true, see
+\citeproc{ref-pfanderQuasiuniversalAcceptanceBasic2025}{Pfänder,
+Kerzreho, et al., 2025}). Suggestions have already been made for a
+number of issues such as vaccination
+(\href{https://janpfander.github.io/phd_thesis/references.html\#ref-mitonCognitiveObstaclesProVaccination2015}{Miton
+and Mercier 2015}), GMOs
+(\href{https://janpfander.github.io/phd_thesis/references.html\#ref-blanckeFatalAttractionIntuitive2015}{Blancke
+et al.~2015}), or nuclear energy
+(\href{https://janpfander.github.io/phd_thesis/references.html\#ref-hacquinDisgustSensitivityPublic2021}{Hacquin
+et al.~2021}). However, research is still needed to better understand
+what motivates these rejections (see e.g.,
+\href{https://janpfander.github.io/phd_thesis/references.html\#ref-hornseyWhyFactsAre2020}{Hornsey
+2020}).
+
+Beyond these theoretical and empirical limitations, the rational
+impression account is limited in its implications. First, we do not
+believe that flooding people with impressive consensual science
+knowledge is the key to overcoming all distrust of science. In the
+context of trust in political institutions, it has been argued that
+trust and distrust are not necessarily symmetrical: what causes the
+former might not help alleviate the latter
+(\citeproc{ref-bertsouRethinkingPoliticalDistrust2019}{Bertsou, 2019}).
+We believe this is at least to some degree true for science, too. For
+example, consensus messaging has been shown to help convince people to
+trust science on particular issues, such as climate change or vaccines,
+but it is less clear whether it worked by fostering perceptions of
+trustworthiness. It could be the case that the people convinced by
+consensus messages already trusted science, but have not held strong
+opinions on the specific matter. This is not implausible, since it has
+been shown that on most matters, large segment of the public do not have
+opinions (\citeproc{ref-bourdieuPublicOpinionDoes1979}{Bourdieu, 1979};
+\citeproc{ref-zallerNatureOriginsMass1992}{Zaller, 1992}). For people
+who do not only lack trust, but who actively distrust, motivated
+reasoning accounts are likely better suited as a theoretical framework.
+Addressing relevant underlying motivations directly might be more
+fruitful to mitigate distrust in science than exposing people to
+consensual science more generally.
+
+Second, and related, just because we propose an account by which trust
+in science can be the result of a rational cognitive process, this does
+not imply that, conversely, all distrust in science is irrational. Some
+groups of people do in fact have good reasons not to trust science. For
+example, some science has historically contributed to fostering racism
+(see e.g. \citeproc{ref-fuentesSystemicRacismScience2023}{Fuentes,
+2023}; \citeproc{ref-noblesScienceMustOvercome2022}{Nobles et al.,
+2022}), via instances such as the tragically famous Tuskegee syphilis
+study (\citeproc{ref-brandtRacismResearchCase1978}{Brandt, 1978};
+\citeproc{ref-scharffMoreTuskegeeUnderstanding2010}{Scharff et al.,
+2010}).
+
+Third, we do not think that science communication should stress
+consensus at all costs. In the rational impression account, consensus
+plays a central role for generating trust. However, this should not
+incentivize science communicators to neglect transparency about
+uncertainty. Acknowledging uncertainty in science communication has been
+argued to be crucial for fostering long term trust in science
+(\citeproc{ref-druckmanCommunicatingPolicyRelevantScience2015}{Druckman,
+2015}). For example, in the context of Covid-19 vaccines, Petersen et
+al. (\citeproc{ref-petersenTransparentCommunicationNegative2021}{2021})
+have shown that communicating uncertainty is crucial for building long
+term trust in health authorities.
+
+Fourth, science communication should not aim for impressiveness at all
+costs either. Research has shown that intellectual humility can increase
+trust in scientists
+(\citeproc{ref-koetkeEffectSeeingScientists2024}{Koetke et al., 2024}).
+Trying to oversell scientific results might therefore backfire. People
+appear to value transparency via open data practices in science
+(\citeproc{ref-songTrustingShouldersOpen2022}{Song et al., 2022}), and
+trust science that replicates more
+(\citeproc{ref-hendriksReplicationCrisisTrust2020}{Hendriks et al.,
+2020}). We should therefore expect that simply doing better, more
+transparent science, and being humble about it, is likely to be the most
+effective strategy to impress the public and elicit perceptions of
+trustworthiness.
+
+Fifth, educators should not stop aiming at fostering a proper
+understanding of science. Most students might not understand all of the
+content, or recall much specific knowledge later on. However, for some
+students at least, some of that knowledge will be remembered, and will
+prove important in their lives. Second, to be impressive, a piece of
+information does not need to be confusingly complex. In fact, a proper
+understanding of research findings and their methods might even help in
+appreciating their complexity--even if, once again, that understanding
+is forgotten later.
+
+Despite these limitations, we believe that the rational impressions
+account offers optimism for studies of science-society interfaces, and
+the field of science communication in particular: Exposure to science,
+especially one that leaves an impression, might be the foundation of
+public trust in science. This means that effective science communication
+is essential for fostering trust in science. Low scientific literacy
+levels should not discourage education and communication efforts, as
+they are not necessarily a good indicator of the value added in terms of
+fostering trust in science.
+
+Taking a broader perspective, our account fits into a picture of humans
+as not gullible (\citeproc{ref-mercierHowGullibleAre2017}{Mercier,
+2017}, \citeproc{ref-mercierNotBornYesterday2020}{2020}). The
+``failure'' of the knowledge account of trust in science--the fact that
+science knowledge appears to not be strongly associated with trust in
+science--might suggest that public trust in science is, to a large
+extent, irrational. The notion that trust in science is irrational or
+easily granted may amplify concerns about the impact of misinformation:
+if trust lacks a solid, rational foundation, then we would expect
+misinformation to easily lead people astray. There is much work to be
+done still to understand how misinformation impacts people's beliefs,
+and in particular elite-driven misinformation and more subtle forms of
+misinformation, such as one-sided reporting. But it has been shown that
+people are generally able to distinguish between true and false news
+and, if anything, tend to be generally skeptical of news
+(\citeproc{ref-pfanderSpottingFalseNews2025}{Pfänder \& Altay, 2025}).
+As a consequence, for a better informed public, fighting for (true)
+information seems at least as relevant as fighting against
+misinformation (\citeproc{ref-acerbiResearchNoteFighting2022}{Acerbi et
+al., 2022}). Misinformation researchers increasingly acknowledge this: A
+recent report on science misinformation by the National Science
+Foundation
+(\citeproc{ref-nationalacademiesofsciencesUnderstandingAddressingMisinformation2024}{National
+Academies of Sciences, 2024}) dedicates considerable space on developing
+strategies to produce better information, for example by promoting
+high-quality science, health, and medical journalism.
+
+The rational impression account stresses the role of fighting for
+information, when it comes to fostering trust in science. Well-placed
+trust in science does not require profound understanding or recall of
+specific knowledge; but it does require exposure to good science.
+
+\section{References}\label{references}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-acerbiResearchNoteFighting2022}
+Acerbi, A., Altay, S., \& Mercier, H. (2022). Research note: Fighting
+misinformation or fighting for information? \emph{Harvard Kennedy School
+Misinformation Review}. \url{https://doi.org/10.37016/mr-2020-87}
+
+\bibitem[\citeproctext]{ref-alganTrustScientistsTimes2021}
+Algan, Y., Cohen, D., Davoine, E., Foucault, M., \& Stantcheva, S.
+(2021). Trust in scientists in times of pandemic: Panel evidence from 12
+countries. \emph{Proceedings of the National Academy of Sciences},
+\emph{118}(40), e2108576118.
+\url{https://doi.org/10.1073/pnas.2108576118}
+
+\bibitem[\citeproctext]{ref-allumScienceKnowledgeAttitudes2008}
+Allum, N., Sturgis, P., Tabourazi, D., \& Brunton-Smith, I. (2008).
+Science knowledge and attitudes across cultures: a meta-analysis.
+\emph{Public Understanding of Science}, \emph{17}(1), 35--54.
+\url{https://doi.org/10.1177/0963662506070159}
+
+\bibitem[\citeproctext]{ref-archerScienceCapitalConceptual2015}
+Archer, L., Dawson, E., DeWitt, J., Seakins, A., \& Wong, B. (2015).
+{``}Science capital{''}: A conceptual, methodological, and empirical
+argument for extending bourdieusian notions of capital beyond the arts.
+\emph{Journal of Research in Science Teaching}, \emph{52}(7), 922--948.
+\url{https://doi.org/10.1002/tea.21227}
+
+\bibitem[\citeproctext]{ref-aschStudiesIndependenceConformity1956}
+Asch, S. E. (1956). Studies of independence and conformity: I. A
+minority of one against a unanimous majority. \emph{Psychological
+Monographs: General and Applied}, \emph{70}(9), 1--70.
+\url{https://doi.org/10.1037/h0093718}
+
+\bibitem[\citeproctext]{ref-bakEducationPublicAttitudes2001}
+Bak, H.-J. (2001). Education and Public Attitudes toward Science:
+Implications for the {``}Deficit Model{''} of Education and Support for
+Science and Technology. \emph{Social Science Quarterly}, \emph{82}(4),
+779--795. \url{https://doi.org/10.1111/0038-4941.00059}
+
+\bibitem[\citeproctext]{ref-bauerWhatCanWe2007}
+Bauer, M. W., Allum, N., \& Miller, S. (2007). What can we learn from 25
+years of PUS survey research? Liberating and expanding the agenda.
+\emph{Public Understanding of Science}, \emph{16}(1), 79--95.
+\url{https://doi.org/10.1177/0963662506071287}
+
+\bibitem[\citeproctext]{ref-bayesMotivatedReasoningClimate2021}
+Bayes, R., \& Druckman, J. N. (2021). Motivated reasoning and climate
+change. \emph{Current Opinion in Behavioral Sciences}, \emph{42},
+27--35. \url{https://doi.org/10.1016/j.cobeha.2021.02.009}
+
+\bibitem[\citeproctext]{ref-beckRiskSocietyNew1992}
+Beck, U. (1992). \emph{Risk society: towards a new modernity} (Repr).
+Sage.
+
+\bibitem[\citeproctext]{ref-bertsouRethinkingPoliticalDistrust2019}
+Bertsou, E. (2019). Rethinking political distrust. \emph{European
+Political Science Review}, \emph{11}(2), 213--230.
+\url{https://doi.org/10.1017/S1755773919000080}
+
+\bibitem[\citeproctext]{ref-besleyReassessingVariablesUsed2021a}
+Besley, J. C., Lee, N. M., \& Pressgrove, G. (2021). Reassessing the
+Variables Used to Measure Public Perceptions of Scientists.
+\emph{Science Communication}, \emph{43}(1), 3--32.
+\url{https://doi.org/10.1177/1075547020949547}
+
+\bibitem[\citeproctext]{ref-bogertEffectTrustScience2024}
+Bogert, J. M., Buczny, Harvey, \& Ellers, J. and. (2024). The effect of
+trust in science and media use on public belief in anthropogenic climate
+change: A meta-analysis. \emph{Environmental Communication},
+\emph{18}(4), 484--509.
+\url{https://doi.org/10.1080/17524032.2023.2280749}
+
+\bibitem[\citeproctext]{ref-bormannTrustTrustingPractices2019}
+Bormann, I., \& Thies, B. (2019). Trust and trusting practices during
+transition to higher education: Introducing a framework of habitual
+trust. \emph{Educational Research}, \emph{61}(2), 161--180.
+\url{https://doi.org/10.1080/00131881.2019.1596036}
+
+\bibitem[\citeproctext]{ref-bourdieuPublicOpinionDoes1979}
+Bourdieu, P. (1979). Public opinion does not exist. \emph{Communication
+and Class Struggle}, \emph{1}, 124--130.
+
+\bibitem[\citeproctext]{ref-brandtRacismResearchCase1978}
+Brandt, A. M. (1978). Racism and Research: The Case of the Tuskegee
+Syphilis Study. \emph{The Hastings Center Report}, \emph{8}(6), 21.
+\url{https://doi.org/10.2307/3561468}
+
+\bibitem[\citeproctext]{ref-cartwrightTangleScienceReliability2022}
+Cartwright, N., Hardie, J., Montuschi, E., Soleiman, M., \& Thresher, A.
+C. (2022). \emph{The tangle of science: Reliability beyond method,
+rigour, and objectivity}. Oxford University Press.
+
+\bibitem[\citeproctext]{ref-collinsSociologyPhilosophiesGlobal2002}
+Collins, R. (2002). \emph{The sociology of philosophies: a global theory
+of intellectual change} (4. print., 1. Harvard Univ. Pr. paperback ed.,
+2000). Belknap Press of Harvard Univ. Press.
+
+\bibitem[\citeproctext]{ref-colognaTrustScientistsTheir2025}
+Cologna, V., Mede, N. G., Berger, S., Besley, J., Brick, C., Joubert,
+M., Maibach, E. W., Mihelj, S., Oreskes, N., Schäfer, M. S., Linden, S.
+van der, Abdul Aziz, N. I., Abdulsalam, S., Shamsi, N. A., Aczel, B.,
+Adinugroho, I., Alabrese, E., Aldoh, A., Alfano, M., \ldots{} Zwaan, R.
+A. (2025). Trust in scientists and their role in society across 68
+countries. \emph{Nature Human Behaviour}, 1--18.
+\url{https://doi.org/10.1038/s41562-024-02090-5}
+
+\bibitem[\citeproctext]{ref-colognaRoleTrustClimate2020}
+Cologna, V., \& Siegrist, M. (2020). The role of trust for climate
+change mitigation and adaptation behaviour: A meta-analysis.
+\emph{Journal of Environmental Psychology}, \emph{69}, 101428.
+\url{https://doi.org/10.1016/j.jenvp.2020.101428}
+
+\bibitem[\citeproctext]{ref-cuddyWarmthCompetenceUniversal2008}
+Cuddy, A. J. C., Fiske, S. T., \& Glick, P. (2008). \emph{Warmth and
+Competence as Universal Dimensions of Social Perception: The Stereotype
+Content Model and the BIAS Map} (Vol. 40, pp. 61--149). Elsevier.
+\url{https://doi.org/10.1016/S0065-2601(07)00002-0}
+
+\bibitem[\citeproctext]{ref-druckmanCommunicatingPolicyRelevantScience2015}
+Druckman, J. N. (2015). Communicating Policy-Relevant Science. \emph{PS:
+Political Science \& Politics}, \emph{48}(S1), 58--69.
+\url{https://doi.org/10.1017/S1049096515000438}
+
+\bibitem[\citeproctext]{ref-druckmanThreatsSciencePoliticization2022}
+Druckman, J. N. (2022). Threats to Science: Politicization,
+Misinformation, and Inequalities. \emph{The ANNALS of the American
+Academy of Political and Social Science}, \emph{700}(1), 8--24.
+\url{https://doi.org/10.1177/00027162221095431}
+
+\bibitem[\citeproctext]{ref-druckmanEvidenceMotivatedReasoning2019}
+Druckman, J. N., \& McGrath, M. C. (2019). The evidence for motivated
+reasoning in climate change preference formation. \emph{Nature Climate
+Change}, \emph{9}(2), 111--119.
+\url{https://doi.org/10.1038/s41558-018-0360-1}
+
+\bibitem[\citeproctext]{ref-drummondIndividualsGreaterScience2017}
+Drummond, C., \& Fischhoff, B. (2017). Individuals with greater science
+literacy and education have more polarized beliefs on controversial
+science topics. \emph{Proceedings of the National Academy of Sciences},
+\emph{114}(36), 9587--9592.
+\url{https://doi.org/10.1073/pnas.1704882114}
+
+\bibitem[\citeproctext]{ref-dubourgUsingNestedStructure2025}
+Dubourg, E., Dheilly, T., Mercier, H., \& Morin, O. (2025). Using the
+Nested Structure of Knowledge to Infer What Others Know.
+\emph{Psychological Science}, \emph{36}(6), 443--450.
+\url{https://doi.org/10.1177/09567976251339633}
+
+\bibitem[\citeproctext]{ref-durantPublicUnderstandingScience1989}
+Durant, J. R., Evans, G. A., \& Thomas, G. P. (1989). The public
+understanding of science. \emph{Nature}, \emph{340}(6228), 11--14.
+\url{https://doi.org/10.1038/340011a0}
+
+\bibitem[\citeproctext]{ref-feinsteinSustainedExperienceEmotion2010}
+Feinstein, J. S., Duff, M. C., \& Tranel, D. (2010). Sustained
+experience of emotion after loss of memory in patients with amnesia.
+\emph{Proceedings of the National Academy of Sciences}, \emph{107}(17),
+7674--7679. \url{https://doi.org/10.1073/pnas.0914054107}
+
+\bibitem[\citeproctext]{ref-fiskeGainingTrustWell2014}
+Fiske, S. T., \& Dupree, C. (2014). Gaining trust as well as respect in
+communicating to motivated audiences about science topics.
+\emph{Proceedings of the National Academy of Sciences},
+\emph{111}(Supplement{\_}4), 13593--13597.
+\url{https://doi.org/10.1073/pnas.1317505111}
+
+\bibitem[\citeproctext]{ref-fuentesSystemicRacismScience2023}
+Fuentes, A. (2023). Systemic racism in science: Reactions matter.
+\emph{Science}, \emph{381}(6655), eadj7675.
+\url{https://doi.org/10.1126/science.adj7675}
+
+\bibitem[\citeproctext]{ref-funkPublicConfidenceScientists2020}
+Funk, C., \& Kennedy, B. (2020). \emph{Public confidence in scientists
+has remained stable for decades}.
+\url{https://www.pewresearch.org/short-reads/2020/08/27/public-confidence-in-scientists-has-remained-stable-for-decades/}
+
+\bibitem[\citeproctext]{ref-funkScienceScientistsHeld2020}
+Funk, C., Tyson, A., Kennedy, B., \& Johnson, C. (2020). \emph{Science
+and scientists held in high esteem across global publics}.
+\url{https://www.pewresearch.org/science/2020/09/29/science-and-scientists-held-in-high-esteem-across-global-publics/}
+
+\bibitem[\citeproctext]{ref-gauchatCulturalAuthorityScience2011}
+Gauchat, G. (2011). The cultural authority of science: Public trust and
+acceptance of organized science. \emph{Public Understanding of Science},
+\emph{20}(6), 751--770. \url{https://doi.org/10.1177/0963662510365246}
+
+\bibitem[\citeproctext]{ref-gauchatPoliticizationSciencePublic2012}
+Gauchat, G. (2012). Politicization of Science in the Public Sphere: A
+Study of Public Trust in the United States, 1974 to 2010. \emph{American
+Sociological Review}, \emph{77}(2), 167--187.
+\url{https://doi.org/10.1177/0003122412438225}
+
+\bibitem[\citeproctext]{ref-gauchatLegitimacyScience2023}
+Gauchat, G. (2023). The Legitimacy of Science. \emph{Annual Review of
+Sociology}, \emph{49}(1), 263--279.
+\url{https://doi.org/10.1146/annurev-soc-030320-035037}
+
+\bibitem[\citeproctext]{ref-gauchatCulturalCognitiveMappingScientific2018}
+Gauchat, G., \& Andrews, K. T. (2018). The Cultural-Cognitive Mapping of
+Scientific Professions. \emph{American Sociological Review},
+\emph{83}(3), 567--595. \url{https://doi.org/10.1177/0003122418773353}
+
+\bibitem[\citeproctext]{ref-giddensModernitySelfidentitySelf1991}
+Giddens, A. (1991). \emph{Modernity and self-identity: Self and society
+in the late modern age}. Stanford University Press.
+
+\bibitem[\citeproctext]{ref-habermasJurgenHabermasSociety1989}
+Habermas, J. (1989). \emph{Jürgen Habermas on society and politics: a
+reader} (S. Seidman, Ed.; 1. {[}print.{]}). Beacon Press.
+
+\bibitem[\citeproctext]{ref-haslamContestingNatureConformity2012}
+Haslam, S. A., \& Reicher, S. D. (2012). Contesting the {``}Nature{''}
+Of Conformity: What Milgram and Zimbardo's Studies Really Show.
+\emph{PLOS Biology}, \emph{10}(11), e1001426.
+\url{https://doi.org/10.1371/journal.pbio.1001426}
+
+\bibitem[\citeproctext]{ref-hastieRobustBeautyMajority2005}
+Hastie, R., \& Kameda, T. (2005). The Robust Beauty of Majority Rules in
+Group Decisions. \emph{Psychological Review}, \emph{112}(2), 494--508.
+\url{https://doi.org/10.1037/0033-295X.112.2.494}
+
+\bibitem[\citeproctext]{ref-hendriksMeasuringLaypeoplesTrust2015}
+Hendriks, F., Kienhues, D., \& Bromme, R. (2015). Measuring
+Laypeople{'}s Trust in Experts in a Digital Age: The Muenster Epistemic
+Trustworthiness Inventory (METI). \emph{PLOS ONE}, \emph{10}(10),
+e0139309. \url{https://doi.org/10.1371/journal.pone.0139309}
+
+\bibitem[\citeproctext]{ref-hendriksReplicationCrisisTrust2020}
+Hendriks, F., Kienhues, D., \& Bromme, R. (2020). Replication crisis =
+trust crisis? The effect of successful vs failed replications on
+laypeople{'}s trust in researchers and research. \emph{Public
+Understanding of Science}, \emph{29}(3), 270--288.
+\url{https://doi.org/10.1177/0963662520902383}
+
+\bibitem[\citeproctext]{ref-hornseyWhyFactsAre2020}
+Hornsey, M. J. (2020). Why Facts Are Not Enough: Understanding and
+Managing the Motivated Rejection of Science. \emph{Current Directions in
+Psychological Science}, \emph{29}(6), 583--591.
+\url{https://doi.org/10.1177/0963721420969364}
+
+\bibitem[\citeproctext]{ref-hornseyAttitudeRootsJiu2017a}
+Hornsey, M. J., \& Fielding, K. S. (2017). Attitude roots and Jiu Jitsu
+persuasion: Understanding and overcoming the motivated rejection of
+science. \emph{American Psychologist}, \emph{72}(5), 459--473.
+\url{https://doi.org/10.1037/a0040437}
+
+\bibitem[\citeproctext]{ref-hornseyMetaanalysesDeterminantsOutcomes2016}
+Hornsey, M. J., Harris, E. A., Bain, P. G., \& Fielding, K. S. (2016).
+Meta-analyses of the determinants and outcomes of belief in climate
+change. \emph{Nature Climate Change}, \emph{6}(6), 622--626.
+\url{https://doi.org/10.1038/nclimate2943}
+
+\bibitem[\citeproctext]{ref-hutmacherMotivatedReasoningClimate2024}
+Hutmacher, F., Reichardt, R., \& Appel, M. (2024). Motivated reasoning
+about climate change and the influence of Numeracy, Need for Cognition,
+and the Dark Factor of Personality. \emph{Scientific Reports},
+\emph{14}(1), 5615. \url{https://doi.org/10.1038/s41598-024-55930-9}
+
+\bibitem[\citeproctext]{ref-intemannScienceCommunicationPublic2023}
+Intemann, K. (2023). Science communication and public trust in science.
+\emph{Interdisciplinary Science Reviews}, \emph{48}(2), 350--365.
+\url{https://doi.org/10.1080/03080188.2022.2152244}
+
+\bibitem[\citeproctext]{ref-kahanClimateScienceCommunicationMeasurement2015}
+Kahan, D. M. (2015). Climate-Science Communication and the Measurement
+Problem. \emph{Political Psychology}, \emph{36}(S1), 1--43.
+\url{https://doi.org/10.1111/pops.12244}
+
+\bibitem[\citeproctext]{ref-kahanPolarizingImpactScience2012}
+Kahan, D. M., Peters, E., Wittlin, M., Slovic, P., Ouellette, L. L.,
+Braman, D., \& Mandel, G. (2012). The polarizing impact of science
+literacy and numeracy on perceived climate change risks. \emph{Nature
+Climate Change}, \emph{2}(10), 732--735.
+\url{https://doi.org/10.1038/nclimate1547}
+
+\bibitem[\citeproctext]{ref-kennedyPublicTrustScientists2024}
+Kennedy, A. T., \& Brian. (2024). \emph{Public trust in scientists and
+views on their role in policymaking}.
+\url{https://www.pewresearch.org/science/2024/11/14/public-trust-in-scientists-and-views-on-their-role-in-policymaking/}
+
+\bibitem[\citeproctext]{ref-kerrRightwingAuthoritarianismSocial2021}
+Kerr, J. R., \& Wilson, M. S. (2021). Right-wing authoritarianism and
+social dominance orientation predict rejection of science and
+scientists. \emph{Group Processes \& Intergroup Relations},
+\emph{24}(4), 550--567. \url{https://doi.org/10.1177/1368430221992126}
+
+\bibitem[\citeproctext]{ref-koetkeEffectSeeingScientists2024}
+Koetke, J., Schumann, K., Bowes, S. M., \& Vaupotič, N. (2024). The
+effect of seeing scientists as intellectually humble on trust in
+scientists and their research. \emph{Nature Human Behaviour}, 1--14.
+\url{https://doi.org/10.1038/s41562-024-02060-x}
+
+\bibitem[\citeproctext]{ref-koetkeTrustScienceIncreases2021}
+Koetke, J., Schumann, K., \& Porter, T. (2021). Trust in science
+increases conservative support for social distancing. \emph{Group
+Processes \& Intergroup Relations}, \emph{24}(4), 680--697.
+\url{https://doi.org/10.1177/1368430220985918}
+
+\bibitem[\citeproctext]{ref-krauseTrendsAmericansTrust2019a}
+Krause, N. M., Brossard, D., Scheufele, D. A., Xenos, M. A., \& Franke,
+K. (2019). Trends{\textemdash}americans{'} trust in science and
+scientists. \emph{Public Opinion Quarterly}, \emph{83}(4), 817--836.
+\url{https://doi.org/10.1093/poq/nfz041}
+
+\bibitem[\citeproctext]{ref-leePartyPolarizationTrust2021}
+Lee, J. J. (2021). Party Polarization and Trust in Science: What about
+Democrats? \emph{Socius}, \emph{7}, 23780231211010101.
+\url{https://doi.org/10.1177/23780231211010101}
+
+\bibitem[\citeproctext]{ref-lewandowskyRoleConspiracistIdeation2013}
+Lewandowsky, S., Gignac, G. E., \& Oberauer, K. (2013). The Role of
+Conspiracist Ideation and Worldviews in Predicting Rejection of Science.
+\emph{PLOS ONE}, \emph{8}(10), e75637.
+\url{https://doi.org/10.1371/journal.pone.0075637}
+
+\bibitem[\citeproctext]{ref-lewandowskyMotivatedRejectionScience2016}
+Lewandowsky, S., \& Oberauer, K. (2016). Motivated Rejection of Science.
+\emph{Current Directions in Psychological Science}, \emph{25}(4),
+217--222. \url{https://doi.org/10.1177/0963721416654436}
+
+\bibitem[\citeproctext]{ref-lewandowskyWorldviewmotivatedRejectionScience2021}
+Lewandowsky, S., \& Oberauer, K. (2021). Worldview-motivated rejection
+of science and the norms of science. \emph{Cognition}, \emph{215},
+104820. \url{https://doi.org/10.1016/j.cognition.2021.104820}
+
+\bibitem[\citeproctext]{ref-vanderlindenGatewayBeliefModel2021}
+Linden, S. van der. (2021). The Gateway Belief Model (GBM): A review and
+research agenda for communicating the scientific consensus on climate
+change. \emph{Current Opinion in Psychology}, \emph{42}, 7--12.
+\url{https://doi.org/10.1016/j.copsyc.2021.01.005}
+
+\bibitem[\citeproctext]{ref-lindholtPublicAcceptanceCOVID192021}
+Lindholt, M. F., Jørgensen, F., Bor, A., \& Petersen, M. B. (2021).
+Public acceptance of COVID-19 vaccines: cross-national evidence on
+levels and individual-level predictors using observational data.
+\emph{BMJ Open}, \emph{11}(6), e048172.
+\url{https://doi.org/10.1136/bmjopen-2020-048172}
+
+\bibitem[\citeproctext]{ref-liquinMotivatedLearnAccount2022}
+Liquin, E. G., \& Lombrozo, T. (2022). Motivated to learn: An account of
+explanatory satisfaction. \emph{Cognitive Psychology}, \emph{132},
+101453. \url{https://doi.org/10.1016/j.cogpsych.2021.101453}
+
+\bibitem[\citeproctext]{ref-lombrozoStructureFunctionExplanations2006}
+Lombrozo, T. (2006). The structure and function of explanations.
+\emph{Trends in Cognitive Sciences}, \emph{10}(10), 464--470.
+\url{https://doi.org/10.1016/j.tics.2006.08.004}
+
+\bibitem[\citeproctext]{ref-lombrozoSimplicityProbabilityCausal2007}
+Lombrozo, T. (2007). Simplicity and probability in causal explanation.
+\emph{Cognitive Psychology}, \emph{55}(3), 232--257.
+\url{https://doi.org/10.1016/j.cogpsych.2006.09.006}
+
+\bibitem[\citeproctext]{ref-lupiaTrendsUSPublic2024}
+Lupia, A., Allison, D. B., Jamieson, K. H., Heimberg, J., Skipper, M.,
+\& Wolf, S. M. (2024). Trends in US public confidence in science and
+opportunities for progress. \emph{Proceedings of the National Academy of
+Sciences}, \emph{121}(11), e2319488121.
+\url{https://doi.org/10.1073/pnas.2319488121}
+
+\bibitem[\citeproctext]{ref-mayerIntegrativeModelOrganizational1995a}
+Mayer, R. C., Davis, J. H., \& Schoorman, F. D. (1995). An Integrative
+Model of Organizational Trust. \emph{The Academy of Management Review},
+\emph{20}(3), 709. \url{https://doi.org/10.2307/258792}
+
+\bibitem[\citeproctext]{ref-maynard-smithAnimalSignals2003}
+Maynard-Smith, J., \& Harper, D. (2003). \emph{Animal signals}. Oxford
+University Press.
+
+\bibitem[\citeproctext]{ref-mercierHowGullibleAre2017}
+Mercier, H. (2017). How Gullible are We? A Review of the Evidence from
+Psychology and Social Science. \emph{Review of General Psychology},
+\emph{21}(2), 103--122. \url{https://doi.org/10.1037/gpr0000111}
+
+\bibitem[\citeproctext]{ref-mercierNotBornYesterday2020}
+Mercier, H. (2020). \emph{Not born yesterday: the science of who we
+trust and what we believe}. \url{https://doi.org/10.1515/9780691198842}
+
+\bibitem[\citeproctext]{ref-mercierMajorityRulesHow2019}
+Mercier, H., \& Morin, O. (2019). Majority rules: how good are we at
+aggregating convergent opinions? \emph{Evolutionary Human Sciences},
+\emph{1}, e6. \url{https://doi.org/10.1017/ehs.2019.6}
+
+\bibitem[\citeproctext]{ref-milgramObedienceAuthorityExperimental1974}
+Milgram, S. (1974). \emph{Obedience to authority: An experimental view}
+(1st ed.). Harper \& Row.
+
+\bibitem[\citeproctext]{ref-millerMeasurementCivicScientific1998a}
+Miller, J. D. (1998). The measurement of civic scientific literacy.
+\emph{Public Understanding of Science}, \emph{7}(3), 203--223.
+\url{https://doi.org/10.1088/0963-6625/7/3/001}
+
+\bibitem[\citeproctext]{ref-millerPublicUnderstandingAttitudes2004}
+Miller, J. D. (2004). Public Understanding of, and Attitudes toward,
+Scientific Research: What We Know and What We Need to Know. \emph{Public
+Understanding of Science}, \emph{13}(3), 273--294.
+\url{https://doi.org/10.1177/0963662504044908}
+
+\bibitem[\citeproctext]{ref-mottaEnduringEffectScientific2018}
+Motta, M. (2018). The enduring effect of scientific interest on trust in
+climate scientists in the United States. \emph{Nature Climate Change},
+\emph{8}(6), 485--488. \url{https://doi.org/10.1038/s41558-018-0126-9}
+
+\bibitem[\citeproctext]{ref-nationalacademiesofsciencesUnderstandingAddressingMisinformation2024}
+National Academies of Sciences, E. (2024). \emph{Understanding and
+addressing misinformation about science}.
+
+\bibitem[\citeproctext]{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}
+National Academies of Sciences, Engineering, and Medicine. (2016).
+\emph{Science Literacy: Concepts, Contexts, and Consequences} (C. E.
+Snow \& K. A. Dibner, Eds.). National Academies Press.
+\url{https://doi.org/10.17226/23595}
+
+\bibitem[\citeproctext]{ref-nationalscienceboardnationalsciencefoundationScienceTechnologyPublic2024}
+National Science Board, National Science Foundation. (2024).
+\emph{Science and technology: Public perceptions, awareness, and
+information sources.} \url{https://ncses.nsf.gov/pubs/nsb20244}
+
+\bibitem[\citeproctext]{ref-newmanDigitalNewsReport2023}
+Newman, N., Fletcher, R., Eddy, K., Robertson, C. T., \& Nielsen, R. K.
+(2023). \emph{Digital news report 2023}.
+
+\bibitem[\citeproctext]{ref-noblesScienceMustOvercome2022}
+Nobles, M., Womack, C., Wonkam, A., \& Wathuti, E. (2022). Science must
+overcome its racist legacy: Nature{'}s guest editors speak.
+\emph{Nature}, \emph{606}(7913), 225--227.
+\url{https://doi.org/10.1038/d41586-022-01527-z}
+
+\bibitem[\citeproctext]{ref-noyScienceGoodEffects2019}
+Noy, S., \& O'Brien, T. L. (2019). Science for good? The effects of
+education and national context on perceptions of science. \emph{Public
+Understanding of Science}, \emph{28}(8), 897--916.
+\url{https://doi.org/10.1177/0963662519863575}
+
+\bibitem[\citeproctext]{ref-oreskesWhyTrustScience2019}
+Oreskes, N. (2019). \emph{Why trust science?} Princeton University
+Press.
+
+\bibitem[\citeproctext]{ref-pardoCognitiveDimensionPublic2004}
+Pardo, R., \& Calvo, F. (2004). The Cognitive Dimension of Public
+Perceptions of Science: Methodological Issues. \emph{Public
+Understanding of Science}, \emph{13}(3), 203--227.
+\url{https://doi.org/10.1177/0963662504045002}
+
+\bibitem[\citeproctext]{ref-perssonPreregisteredReplicationMotivated2021}
+Persson, E., Andersson, D., Koppel, L., Västfjäll, D., \& Tinghög, G.
+(2021). A preregistered replication of motivated numeracy.
+\emph{Cognition}, \emph{214}, 104768.
+\url{https://doi.org/10.1016/j.cognition.2021.104768}
+
+\bibitem[\citeproctext]{ref-petersenTransparentCommunicationNegative2021}
+Petersen, M. B., Bor, A., Jørgensen, F., \& Lindholt, M. F. (2021).
+Transparent communication about negative features of COVID-19 vaccines
+decreases acceptance but increases trust. \emph{Proceedings of the
+National Academy of Sciences}, \emph{118}(29), e2024597118.
+\url{https://doi.org/10.1073/pnas.2024597118}
+
+\bibitem[\citeproctext]{ref-pfanderSpottingFalseNews2025}
+Pfänder, J., \& Altay, S. (2025). Spotting false news and doubting true
+news: a systematic review and meta-analysis of news judgements.
+\emph{Nature Human Behaviour}, 1--12.
+\url{https://doi.org/10.1038/s41562-024-02086-1}
+
+\bibitem[\citeproctext]{ref-pfanderHowWiseCrowd2025}
+Pfänder, J., De Courson, B., \& Mercier, H. (2025). How wise is the
+crowd: Can we infer people are accurate and competent merely because
+they agree with each other? \emph{Cognition}, \emph{255}, 106005.
+\url{https://doi.org/10.1016/j.cognition.2024.106005}
+
+\bibitem[\citeproctext]{ref-pfanderQuasiuniversalAcceptanceBasic2025}
+Pfänder, J., Kerzreho, L., \& Mercier, H. (2025). \emph{Quasi-universal
+acceptance of basic science in the US}.
+\url{https://doi.org/10.31219/osf.io/qc43v_v2}
+
+\bibitem[\citeproctext]{ref-pfanderFrenchTrustMore2025}
+Pfänder, J., \& Mercier, H. (2025). \emph{The french trust more the
+sciences they perceive as precise and consensual}.
+\url{https://doi.org/10.31219/osf.io/k9m6e_v1}
+
+\bibitem[\citeproctext]{ref-pfanderTrustingForgettingImpressive2025}
+Pfänder, J., Rouilhan, S. D., \& Mercier, H. (2025). \emph{Trusting but
+forgetting impressive science}.
+\url{https://doi.org/10.31219/osf.io/argq5_v1}
+
+\bibitem[\citeproctext]{ref-readExplanatoryCoherenceSocial1993}
+Read, S. J., \& Marcus-Newhall, A. (1993). Explanatory coherence in
+social explanations: A parallel distributed processing account.
+\emph{Journal of Personality and Social Psychology}, \emph{65}(3),
+429--447. \url{https://doi.org/10.1037/0022-3514.65.3.429}
+
+\bibitem[\citeproctext]{ref-rousseauIntroductionSpecialTopic1998}
+Rousseau, D. M., Sitkin, S. B., Burt, R. S., \& Camerer, C. (1998).
+Introduction to Special Topic Forum: Not so Different after All: A
+Cross-Discipline View of Trust. \emph{The Academy of Management Review},
+\emph{23}(3), 393--404. \url{http://www.jstor.org/stable/259285}
+
+\bibitem[\citeproctext]{ref-rutjensConspiracyBeliefsScience2022}
+Rutjens, B. T., \& Većkalov, B. (2022). Conspiracy beliefs and science
+rejection. \emph{Current Opinion in Psychology}, \emph{46}, 101392.
+\url{https://doi.org/10.1016/j.copsyc.2022.101392}
+
+\bibitem[\citeproctext]{ref-salmonVaccineHesitancyCauses2015}
+Salmon, D. A., Dudley, M. Z., Glanz, J. M., \& Omer, S. B. (2015).
+Vaccine hesitancy: Causes, consequences, and a call to action.
+\emph{Vaccine}, \emph{33}, D66--D71.
+
+\bibitem[\citeproctext]{ref-scharffMoreTuskegeeUnderstanding2010}
+Scharff, D. P., Mathews, K. J., Jackson, P., Hoffsuemmer, J., Martin,
+E., \& Edwards, D. (2010). More than Tuskegee: Understanding Mistrust
+about Research Participation. \emph{Journal of Health Care for the Poor
+and Underserved}, \emph{21}(3), 879--897.
+\url{https://doi.org/10.1353/hpu.0.0323}
+
+\bibitem[\citeproctext]{ref-scheufeleThirtyYearsScience2022}
+Scheufele, D. A. (2022). Thirty years of science{\textendash}society
+interfaces: What{'}s next? \emph{Public Understanding of Science},
+\emph{31}(3), 297--304. \url{https://doi.org/10.1177/09636625221075947}
+
+\bibitem[\citeproctext]{ref-scheufeleScienceAudiencesMisinformation2019}
+Scheufele, D. A., \& Krause, N. M. (2019). Science audiences,
+misinformation, and fake news. \emph{Proceedings of the National Academy
+of Sciences}, \emph{116}(16), 7662--7669.
+\url{https://doi.org/10.1073/pnas.1805871115}
+
+\bibitem[\citeproctext]{ref-smithTrendsPublicAttitudes2013}
+Smith, T. W., \& Son, J. (2013). Trends in public attitudes about
+confidence in institutions. \emph{General Social Survey Final Report}.
+
+\bibitem[\citeproctext]{ref-songTrustingShouldersOpen2022}
+Song, H., Markowitz, D. M., \& Taylor, S. H. (2022). Trusting on the
+shoulders of open giants? Open science increases trust in science for
+the public and academics. \emph{Journal of Communication}, \emph{72}(4),
+497--510. \url{https://doi.org/10.1093/joc/jqac017}
+
+\bibitem[\citeproctext]{ref-sperberEpistemicVigilance2010}
+Sperber, D., Clément, F., Heintz, C., Mascaro, O., Mercier, H., Origgi,
+G., \& Wilson, D. (2010). Epistemic vigilance. \emph{Mind \& Language},
+\emph{25}(4), 359--393.
+
+\bibitem[\citeproctext]{ref-stagnaroNoAssociationNumerical2023a}
+Stagnaro, M. N., Tappin, B. M., \& Rand, D. G. (2023). No association
+between numerical ability and politically motivated reasoning in a large
+US probability sample. \emph{Proceedings of the National Academy of
+Sciences}, \emph{120}(32), e2301491120.
+\url{https://doi.org/10.1073/pnas.2301491120}
+
+\bibitem[\citeproctext]{ref-sturgisScienceSocietyReEvaluating2004}
+Sturgis, P., \& Allum, N. (2004). Science in Society: Re-Evaluating the
+Deficit Model of Public Attitudes. \emph{Public Understanding of
+Science}, \emph{13}(1), 55--74.
+\url{https://doi.org/10.1177/0963662504042690}
+
+\bibitem[\citeproctext]{ref-sturgisTrustScienceSocial2021}
+Sturgis, P., Brunton-Smith, I., \& Jackson, J. (2021). Trust in science,
+social consensus and vaccine confidence. \emph{Nature Human Behaviour},
+\emph{5}(11), 1528--1534.
+\url{https://doi.org/10.1038/s41562-021-01115-7}
+
+\bibitem[\citeproctext]{ref-vanstekelenburgScientificConsensusCommunicationContested2022}
+Van Stekelenburg, A., Schaap, G., Veling, H., Van 'T Riet, J., \&
+Buijzen, M. (2022). Scientific-Consensus Communication About Contested
+Science: A Preregistered Meta-Analysis. \emph{Psychological Science},
+\emph{33}(12), 1989--2008.
+\url{https://doi.org/10.1177/09567976221083219}
+
+\bibitem[\citeproctext]{ref-veckalov27countryTestCommunicating2024}
+Većkalov, B., Geiger, S. J., Bartoš, F., White, M. P., Rutjens, B. T.,
+Harreveld, F. van, Stablum, F., Akın, B., Aldoh, A., Bai, J., Berglund,
+F., Bratina Zimic, A., Broyles, M., Catania, A., Chen, A., Chorzępa, M.,
+Farahat, E., Götz, J., Hoter-Ishay, B., \ldots{} Linden, S. van der.
+(2024). A 27-country test of communicating the scientific consensus on
+climate change. \emph{Nature Human Behaviour}, 1--14.
+\url{https://doi.org/10.1038/s41562-024-01928-2}
+
+\bibitem[\citeproctext]{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2018}
+Wellcome Global Monitor. (2018). \emph{Wellcome Global Monitor 2018}.
+\url{https://wellcome.org/reports/wellcome-global-monitor/2018}
+
+\bibitem[\citeproctext]{ref-wellcomeglobalmonitorWellcomeGlobalMonitor2020}
+Wellcome Global Monitor. (2020). \emph{Wellcome Global Monitor 2020:
+Covid-19}.
+\url{https://wellcome.org/reports/wellcome-global-monitor-covid-19/2020}
+
+\bibitem[\citeproctext]{ref-wellcomeglobalmonitorPublicTrustScientists2021}
+Wellcome Global Monitor. (2021). \emph{Public trust in scientists rose
+during the Covid-19 pandemic \textbar{} News}.
+\url{https://wellcome.org/news/public-trust-scientists-rose-during-covid-19-pandemic}
+
+\bibitem[\citeproctext]{ref-wilholtEpistemicTrustScience2013}
+Wilholt, T. (2013). Epistemic trust in science. \emph{The British
+Journal for the Philosophy of Science}, \emph{64}(2), 233--253.
+\url{https://doi.org/10.1093/bjps/axs007}
+
+\bibitem[\citeproctext]{ref-wintterlinPredictingPublicTrust2022}
+Wintterlin, F., Hendriks, F., Mede, N. G., Bromme, R., Metag, J., \&
+Schäfer, M. S. (2022). Predicting public trust in science: The role of
+basic orientations toward science, perceived trustworthiness of
+scientists, and experiences with science. \emph{Frontiers in
+Communication}, \emph{6}.
+\url{https://doi.org/10.3389/fcomm.2021.822757}
+
+\bibitem[\citeproctext]{ref-zallerNatureOriginsMass1992}
+Zaller, J. (1992). \emph{The nature and origins of mass opinion}.
+Cambridge university press.
+
+\end{CSLReferences}
+
+
+
+
+
+
+\end{document}
