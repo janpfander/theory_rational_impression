@@ -4,3 +4,6 @@
 .httr-oauth
 .DS_Store
 .quarto
+
+# Ignore gss data
+gss_cross/data/*
