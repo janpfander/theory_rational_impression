@@ -7,3 +7,6 @@
 
 # Ignore gss data
 gss_cross/data/*
+
+# ignore other files 
+no_git
