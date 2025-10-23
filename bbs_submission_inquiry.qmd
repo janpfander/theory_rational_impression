@@ -1,0 +1,276 @@
+---
+title: "The rational impression account of trust in science"
+# If blank, the running header is the title in upper case.
+shorttitle: "BBS pre-submission inquiry"
+# Set names and affiliations.
+# It is nice to specify everyone's orcid, if possible.
+# There can be only one corresponding author, but declaring one is optional.
+author:
+  - name: Jan Pfänder
+    corresponding: true
+    orcid: 0009-0009-4389-2807
+    email: janlukas.pfaender@gmail.com
+    affiliations:
+      - id: id1  # Added an explicit ID for referencing
+        name: Swiss Federal Institute of Aquatic Science and Technology (Eawag)
+        department: Department of Environmental Social Sciences
+  - name: Hugo Mercier
+    corresponding: false
+    orcid: 0000-0002-0575-7913
+    email: hugo.mercier@gmail.com
+    affiliations: 
+      - ref: id2
+        name: ENS, EHESS, PSL University, CNRS, France
+        department: Institut Jean Nicod, Département d’études cognitives
+blank-lines-above-author-note: 2
+author-note:
+  status-changes: 
+    # Example: [Author name] is now at [affiliation].
+    affiliation-change: ~
+    # Example: [Author name] is deceased.
+    deceased: ~
+  # Disclosures condensed to one paragraph, but you can start a field with two line breaks to break them up: \n\nNew Paragraph
+  disclosures:
+    # Example: This study was registered at X (Identifier Y).
+    study-registration: ~
+    # Acknowledge and cite data/materials to be shared.
+    data-sharing: ~
+    # Example: This article is based on data published in [Reference].
+    # Example: This article is based on the dissertation completed by [citation].  
+    related-report: ~
+    # Example: [Author name] has been a paid consultant for Corporation X, which funded this study.
+    conflict-of-interest: The authors have no conflicts of interest to disclose.
+    # Example: This study was supported by Grant [Grant Number] from [Funding Source].
+    financial-support: ~
+    # Example: The authors are grateful to [Person] for [Reason].
+    gratitude: ~
+    # Example. Because the authors are equal contributors, order of authorship was determined by a fair coin toss.
+    authorship-agreements: ~
+abstract: ""
+  
+  
+# Put as many keywords at you like, separated by commmas (e.g., [reliability, validity, generalizability])
+keywords: [trust in science, science literacy, deficit model, epistemic vigilance, consensus]
+# If true, tables and figures are mingled with the text instead of listed at the end of the document.
+impact-statement: ~
+# If true, a word count will appear below the keywords (tables, figure captions, and references excluded in count.)
+word-count: true
+floatsintext: true
+# Numbered lines (.pdf and .docx only)
+numbered-lines: false
+# File with references
+bibliography: bibliography.bib
+# Suppress title page
+suppress-title-page: false
+# Link citations to references
+link-citations: true
+# Masks references that appear in the masked-citations list
+mask: false
+masked-citations:
+# If true, adds today's date below author affiliations. If text, can be any value.
+# This is not standard APA format, but it is convenient.
+# Works with docx, html, and typst. 
+draft-date: true
+# Language options. See https://quarto.org/docs/authoring/language.html
+lang: en
+language:
+  citation-last-author-separator: "and"
+  citation-masked-author: "Masked Citation"
+  citation-masked-date: "n.d."
+  citation-masked-title: "Masked Title"
+  email: "Email"
+  title-block-author-note: "Author Note"
+  title-block-correspondence-note: "Correspondence concerning this article should be addressed to"
+  title-block-role-introduction: "Author roles were classified using the Contributor Role Taxonomy (CRediT; [credit.niso.org](https://credit.niso.org)) as follows:"
+  title-impact-statement: "Impact Statement"
+  references-meta-analysis: "References marked with an asterisk indicate studies included in the meta-analysis."
+format:
+  apaquarto-docx: 
+    toc: false
+  apaquarto-html: 
+    toc: true
+  apaquarto-typst: 
+    keep-typ: true
+    list-of-figures: false
+    list-of-tables: false
+    toc: false
+    papersize: "us-letter"
+  apaquarto-pdf:
+    # Can be jou (journal), man (manuscript), stu (student), or doc (document)
+    documentmode: man
+    keep-tex: true
+
+header-includes:  | # to prevent floats from moving past certain points (for the appendix)
+  \usepackage{placeins} 
+    
+always_allow_html: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+#| message: false
+library(tidyverse)
+library(flextable)
+library(tinytable)
+library(kableExtra)
+```
+
+```{r}
+#| label: functions
+#| include: false
+#| message: false
+# load plot theme
+source("functions/plot_theme.R") 
+
+# load other functions
+source("functions/functions.R")
+```
+
+```{r}
+#| label: gss
+#| include: false
+#| message: false
+# read gss data
+gss <- read_csv("gss_cross/data/gss_cross_cleaned.csv")
+
+
+# Average confidence levels by institution and year
+gss_summary_numeric <- gss |>
+  group_by(year, institution, institution_label) |>
+  summarize(mean_confidence = mean(confidence, na.rm = TRUE)) |> 
+  ungroup() |> 
+  # remove years without measure
+  drop_na(mean_confidence )
+
+
+# Share of people with great deal of trust by institution and year
+gss_summary_great_deal <- gss |>
+  drop_na(confidence) |> 
+  group_by(year, institution, institution_label) |>
+  summarize(
+    total_responses = n(),
+    great_deal_count = sum(confidence_factor == "A great deal confidence", na.rm = TRUE),
+    share = great_deal_count / total_responses,
+    # remove 0s
+    share = ifelse(share == 0, NA, share)
+  ) |>
+  ungroup() |> 
+  # remove years without measure
+  drop_na(share)
+
+# check the four on average top trusted institutions using the mean
+top_trusted_institutions <- gss |>
+  group_by(institution, institution_label) |>
+  summarise(mean_confidence = mean(confidence, na.rm = TRUE)) |>
+  ungroup() |> 
+  arrange(desc(mean_confidence)) |>
+  slice_head(n = 4)  # Select top 4
+
+# check the four top institutions using highest share of great deal of trust
+top_intitutions_great_deal <- gss_summary_great_deal |> 
+  group_by(institution, institution_label) |> 
+  summarize(mean_share = mean(share, na.rm=TRUE)) |> 
+  ungroup() |> 
+  arrange(desc(mean_share)) |>
+  # Select top 4
+  slice_head(n = 4) |> 
+  rounded_numbers() |> 
+  mutate(mean_share = paste0(round(mean_share * 100), "%")) %>% 
+  split(.$institution)
+
+# get the number of institutions
+n_institutions <- gss |> 
+  distinct(institution, institution_label) |> 
+  nrow()
+
+# get the minimum and maximum range for people with great deal of confidence in trust in science 
+max_min_trust <- gss_summary_great_deal |>
+  filter(institution == "consci") |>
+  filter(share == min(share) | share == max(share)) |> 
+  rounded_numbers() |> 
+  mutate(share = paste0(round(share * 100), "%")) %>%
+  split(.$share)
+
+# get average yearly deviation from long-term mean
+yearly_variation <- gss_summary_great_deal |>
+  group_by(institution) |> 
+  summarise(average_deviation = mean(abs(share - mean(share, na.rm = TRUE)), na.rm = TRUE), 
+            sd = sd(share, na.rm = TRUE)) |> 
+  rounded_numbers() |> 
+  mutate(across(where(is.numeric), ~.x * 100)) |> 
+  arrange(average_deviation) %>%
+  split(.$institution)
+
+```
+
+In our manuscript, we argue that existing work on trust in science has not solved a basic puzzle: why do most people tend to trust science, even though they know so little about it?
+
+To solve this puzzle, we develop a *rational impression account* of trust in science. According to this account, people do not need a profound understanding or detailed knowledge of science to rationally trust it. Instead, by appealing to basic cognitive mechanisms of information evaluation, science impresses people, who then mostly forget the information that had impressed them.
+
+# The puzzle of why people trust science
+
+The idea that knowledge of science is the primary cause of trust in–and more generally positive attitudes towards–science has long dominated research on public understanding of science [@bauerWhatCanWe2007]. This idea is widely known under the term "deficit model," because much of the literature attested to the public's "depressingly low levels of scientific knowledge" that were assumed to be the principal cause of negative attitudes towards science [@sturgisScienceSocietyReEvaluating2004, p. 56].
+
+This deficit model, however, is hard to square with the observation that people tend to trust science, despite not knowing much about it.
+
+## People tend to trust science
+
+Across the globe, most people trust science, at least to some extent. A recent study in 68 countries found that, across the globe, trust in scientists was "moderately high" (mean = 3.62; sd= 0.70; Scale: 1 = very low, 2 = somewhat low, 3 = neither high nor low, 4 = somewhat high, 5 = very high), with not a single country below midpoint trust [@colognaTrustScientistsTheir2025]. Long-term global data on trust in science across time is sparse, yet the available data suggests, if anything, a recent increase of trust in science: In 2018, the Wellcome Global Monitor (WGM) surveyed more than 140,000 people in over 140 countries on trust in science [@wellcomeglobalmonitorWellcomeGlobalMonitor2018]. In 2020, during the first year of the Covid pandemic and before vaccines were widely available, a follow-up survey was conducted in 113 countries, with 119,000 participants [@wellcomeglobalmonitorWellcomeGlobalMonitor2020]. Between these two surveys, on average, trust in science had risen [@wellcomeglobalmonitorPublicTrustScientists2021]: In 2020, 41% (32% in 2018) of respondents said they trust science a lot, 39% (45% in 2018) said they trust science to some extent, 13% (also 13% in 2018) said they trust science "not much or not at all" (with the rest answering“I don’t know”).
+
+## People do not know much about science
+
+For decades, researchers have observed low levels of science knowledge, regarding both factual knowledge and methodological understanding [@nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016]. Not only are levels of science knowledge and understanding low, but they are only weakly correlated with trust in science. In a meta-analysis, @allumScienceKnowledgeAttitudes2008 found that factual science knowledge was only weakly associated with attitudes towards science. More recently, @colognaTrustScientistsTheir2025 found no statistically significant relationship between national science literacy scores, based on the Program for International Student Assessment (PISA), and national average trust in scientists for the 68 countries included in their study.
+
+If knowledge and understanding of science do not seem to be strong determinants of this trust, does this mean that trust in science is irrational?
+
+# The rational impression account of trust in science
+
+In the rational impression account of trust in science, people trust science because they have been impressed by it. This trust persists even after the specific contents that gave rise to the trust have been forgotten. The account builds on three basic cognitive mechanisms. First, we infer that people who possess rare knowledge are more broadly knowledgeable: If someone states something that is difficult to know, and we believe that they are right, we are impressed, and deem that individual competent. Second, in many situations, we infer accuracy from consensus: If something is highly consensual, it is likely to be true. Third, impressions can persist without recall of what generated them: While learning about science can create lasting impressions, we are likely to forget about specific science knowledge.
+
+## People infer competence from rare knowledge
+
+Estimating other people's competence from communicated information is an essential skill in a variety of social contexts, including communication [@sperberEpistemicVigilance2010], cooperation [@cuddyBIASMapBehaviors2007], and social learning [@kendalSocialLearningStrategies2018].
+
+One reliable cue to competence is possessing specific pieces of knowledge: people see others who share valuable ideas as more competent [@altayItMyIdea2020]. With trivia questions, it has been shown that people have accurate perceptions of whether something is hard to know or not, and that they use this information to infer someone's competence [@dubourgUsingNestedStructure2025]: knowing a rare piece of information indicates a high likelihood of knowing more information in the same domain. In the case of science, @pfanderTrustingForgettingImpressive2025 showed that participants perceive some scientific findings as more impressive than others. Reading about the more impressive scientific findings increased participants' perceptions of both the scientists' competence and the trustworthiness of their discipline.
+
+For people to be impressed by an information, however, they also need to believe it to be true. Yet, as a rule, people cannot evaluate scientific discoveries by themselves. Below, we describe how perceived consensus might allow people to infer that a piece of information is true, even if they do not understand how it was acquired.
+
+## People infer accuracy from consensus
+
+In order to make the best of communicated information, individuals need to be able to evaluate it, i.e. being able to distinguish inaccurate and harmful from accurate and beneficial information [@maynard-smithAnimalSignals2003]. It has been argued that humans have evolved a suite of cognitive mechanisms to serve this function, mechanisms which evaluate both the source of a piece of information and its content [@sperberEpistemicVigilance2010; @mercierNotBornYesterday2020].
+
+In the case of science, if we do not already assume that people trust scientists (i.e. the source), it seems that we are left only with content. However, people cannot evaluate the quality of the arguments and evidence for themselves, let alone make their own observations (e.g. few people understand complex analysis or group symmetry, and even fewer have access to a particle accelerator). Scientific findings also tend to violate our intuitions [@wolpertUnnaturalNatureScience1994; @cromerUncommonSenseHeretical1995; @shtulmanScienceblindWhyOur2017; @mccauleyWhyReligionNatural2011a], and thus their content should be intuitively deemed implausible.
+
+It is possible, however, to rationally believe that a piece of information is true even if it is not intuitively plausible, and if we don’t already trust its source: if enough people agree with it. The potential of the wisdom of crowds to lead to accurate answer has been known for centuries [@condorcetEssaiLapplicationLanalyse1785; @hastieRobustBeautyMajority2005] and, on the whole, people make sound use of this heuristic, being more likely to accept a piece of information when it is supported by a larger majority [in relative and absolute terms, for review, see @mercierMajorityRulesHow2019].
+
+The wisdom of crowds literature assumes that informants---the individuals providing answers---need to be at least minimally competent [i.e. better than chance, @condorcetEssaiLapplicationLanalyse1785]. However, recently, @pfanderHowWiseCrowd2025 have shown that it is enough to assume that informants are not all biased in exactly the same way to make justified inferences from their agreement to not only the accuracy of their answers, but also their competence. Participants who had no prior beliefs about an answer’s plausibility, or the competence of those who provided it, deemed more convergent answers more plausible, and those who made them more competent. This was true in abstract scenarios [@pfanderHowWiseCrowd2025], but other research suggests that these inferences are justified across a wide range of real-world decision making scenarios [@kurversHowDetectHighperforming2019].
+
+To the extent that people perceive a scientific finding as being largely consensual within the research community, they should thus infer not only that it is more likely to be correct, but also that the scientists responsible for the finding are competent. Much evidence shows that, as a rule, when people are told about the scientific consensus on a given issue, they change their minds in the direction of the consensus [e.g., @vanderlindenGatewayBeliefModel2021; @veckalov27countryTestCommunicating2024; @vanstekelenburgScientificConsensusCommunicationContested2022]. Even if people aren’t explicitly told that a scientific consensus exists, they likely assume that it is the case, at least for issues taken to be settled science, such as those they are exposed to at school---and they would be broadly right as the ability to reach a working consensus is a defining trait of science [@collinsSociologyPhilosophiesGlobal2002]. In line with this suggestion, people (in France) trust scientists more when they work in disciplines that people perceive as more consensual [@pfanderFrenchTrustMore2025]. People also trust science more when it successfully replicates---a way of solidifying consensus [@hendriksReplicationCrisisTrust2020].
+
+As pointed out above, the correlation between science knowledge and attitudes towards science, if it is positive, is weak [@allumScienceKnowledgeAttitudes2008]. To explain this and, more generally, the low levels of knowledge of science by comparison with trust in science, we argue that people are likely forget most specific science content they had been exposed to, while an impression of trustworthiness persists.
+
+## People forget specific knowledge while impressions persist
+
+We commonly form impressions of the people around us while forgetting the details of how we formed these impressions: If a colleague fixes our computer, we might forget how they fixed it, yet remember that they are good at fixing computers. Similarly, people might forget the specific content of science knowledge they have been exposed to, but retain an impression of scientists’ competence. Several research strands suggest that impressions can persist, while recall of specific information fades.
+
+Memory research suggests that implicit memory is more stable than explicit memory [@slomanForgettingPrimedFragment1988; @parkinDifferentialNatureImplicit1990]. It has also been argued that memory encodes information both as "verbatim" details–exact words or numbers–information and "gist" representations–the essence or bottom-line meaning [@reynaScientificTheoryGist2021], and that the verbatim memory tends to fade faster [@murphyForgettingVerbatimInformation1994].
+
+More extreme examples supporting the idea that impressions can be detached from the memory of specific events come from medical research: patients with severe amnesia, for instance, can continue to experience emotions linked to events they could not recall [@feinsteinSustainedExperienceEmotion2010]. Other research has shown that patients with profound episodic memory impairment due to dementia continue to show capacity for emotional learning [@evans-robertsRememberingRelationshipsPreserved2010].
+
+Some research in the context of science suggests that processes of impression formation and knowledge retention can be quite detached: in an experiment, participants found some science-related explanations more satisfying than others, but this did not predict how well they could recall the explanations shortly after [@liquinMotivatedLearnAccount2022]. In a study mentioned above [@pfanderTrustingForgettingImpressive2025, which showed that being exposed to impressive scientific content led to higher trust in the relevant scientific discipline], another experiment showed that participants immediately forgot most of the information which had impressed them.
+
+Taken together, these findings make it very plausible that people, after they have been exposed to science, might retain a positive impression of scientists while forgetting most of the content that generated the impression.
+
+# Discussion
+
+Most people trust science at least to some extent [@wellcomeglobalmonitorWellcomeGlobalMonitor2018; @wellcomeglobalmonitorWellcomeGlobalMonitor2020; @colognaTrustScientistsTheir2025]. This is true even though people, as a rule, don’t understand or know much about science, and don’t consume much scientific information. The rational impression account of trust in science accounts for these facts by suggesting that, when people are exposed to science, mostly during their education, they rationally develop a positive impression of science–in particular of the competence of scientists—while then they forget most of the information that gave rise to this impression.
+
+In its stress on consensus among scientists, the rational impression account is coherent with accounts of how science manages to yield accurate understanding of the world, accounts that stress the importance of having convergent results from multiple sources and methods [@cartwrightTangleScienceReliability2022; @oreskesWhyTrustScience2019]. In the present account, people are not able, in most cases, to verify for themselves that science is accurate. However, by tracking what is consensual among scientists, which tends to track what is accurate, people’s beliefs can remain broadly accurate. This is an ideal case scenario, when nothing gets in the way of accepting the scientific consensus. However, people still reject some specific scientific knowledge, for instance because it is perceived as particularly inconvenient (e.g., knowledge of climate change which would urge us to change our behavior), or because it is rejected by other authorities—political, religious—which people trust (e.g. the rejection of evolution among some religious communities).
+
+Trust in science ultimately rests on scientists producing accurate knowledge that can garner a consensus and pass the test of time. We should therefore expect that efforts at improving science methodology---the introduction of mandatory pre-registration for clinical trials for instance [@kaplanLikelihoodNullEffects2015]---will result in increases in trust in science, not only when people are aware of them [see, @songTrustingShouldersOpen2022], but also when they are not, through the generation of more accurate, robust, and consensual scientific knowledge.
+
+# References
+
+::: {#refs}
+:::
