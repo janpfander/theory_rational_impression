@@ -1,5 +1,5 @@
 \documentclass[
-  man,
+  jou,
   floatsintext,
   longtable,
   nolmodern,
@@ -217,13 +217,46 @@ Mercier}{0000-0002-0575-7913}}
 Pfänder, Email: \href{mailto:janlukas.pfaender@gmail.com}{janlukas.pfaender@gmail.com}}
 }
 
+\usepackage{pbalance}
+% \usepackage{float}
 \makeatletter
-\let\endoldlt\endlongtable
+\let\oldtpt\ThreePartTable
+\let\endoldtpt\endThreePartTable
+\def\ThreePartTable{\@ifnextchar[\ThreePartTable@i \ThreePartTable@ii}
+\def\ThreePartTable@i[#1]{\begin{figure}[!htbp]
+\onecolumn
+\begin{minipage}{0.485\textwidth}
+\oldtpt[#1]
+}
+\def\ThreePartTable@ii{\begin{figure}[!htbp]
+\onecolumn
+\begin{minipage}{0.48\textwidth}
+\oldtpt
+}
+\def\endThreePartTable{
+\endoldtpt
+\end{minipage}
+\twocolumn
+\end{figure}}
+\makeatother
+
+
+\makeatletter
+\let\endoldlt\endlongtable		
 \def\endlongtable{
 \hline
-\endoldlt
-}
+\endoldlt}
 \makeatother
+
+\newenvironment{twocolumntable}% environment name
+{% begin code
+\begin{table*}[!htbp]%
+\onecolumn%
+}%
+{%
+\twocolumn%
+\end{table*}%
+}% end code
 
 \urlstyle{same}
 
@@ -544,12 +577,14 @@ Sciences, Engineering, and Medicine
 p. 51}), performance on the Oxford scale items in the US has been
 ``fairly stable across 2 decades.''
 
-\begin{table}
+\begin{twocolumntable}
 
-{\caption{{}{\label{tbl-oxford}}}
-\vspace{-20pt}}
+\begin{longtable}[t]{>{\raggedleft\arraybackslash}p{2em}>{\raggedright\arraybackslash}p{40em}}
 
-\begin{longtable*}[t]{>{\raggedleft\arraybackslash}p{2em}>{\raggedright\arraybackslash}p{40em}}
+\caption{\label{tbl-oxford}}
+
+\tabularnewline
+
 \toprule
  & \\
 \midrule
@@ -568,14 +603,15 @@ p. 51}), performance on the Oxford scale items in the US has been
 11 & The universe began with a huge explosion. (True)\\
 \bottomrule
 \multicolumn{2}{l}{\rule{0pt}{1em}*Only asked if previous question was answered correctly.}\\
-\end{longtable*}
+
+\end{longtable}
 
 An 11-item version of the Oxford-scale, as reported in a comprehensive
 review of the literature on scientific literacy
 (\citeproc{ref-nationalacademiesofsciencesengineeringandmedicineScienceLiteracyConcepts2016}{National
 Academies of Sciences, Engineering, and Medicine, 2016})
 
-\end{table}
+\end{twocolumntable}
 
 The Oxford scale has been criticized for only capturing factual recall
 (\citeproc{ref-bauerWhatCanWe2007}{Bauer et al., 2007};
@@ -1232,6 +1268,10 @@ people are aware of them (see,
 \citeproc{ref-songTrustingShouldersOpen2022}{Song et al., 2022}), but
 also when they are not, through the generation of more accurate, robust,
 and consensual scientific knowledge.
+
+\section{Competing interest}\label{competing-interest}
+
+The authors declare having no competing interests.
 
 \section{References}\label{references}
 

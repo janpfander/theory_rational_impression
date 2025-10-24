@@ -66,7 +66,6 @@ suppress-title-page: false
 link-citations: true
 # Masks references that appear in the masked-citations list
 mask: false
-masked-citations:
 # If true, adds today's date below author affiliations. If text, can be any value.
 # This is not standard APA format, but it is convenient.
 # Works with docx, html, and typst. 
@@ -97,7 +96,7 @@ format:
     papersize: "us-letter"
   apaquarto-pdf:
     # Can be jou (journal), man (manuscript), stu (student), or doc (document)
-    documentmode: man
+    documentmode: jou
     keep-tex: true
 
 header-includes:  | # to prevent floats from moving past certain points (for the appendix)
@@ -380,6 +379,10 @@ The fact that people appear to forget most of the details they have learnt about
 With these caveats in mind, we believe that the rational impressions account offers optimism for science communication and education. Exposure to science might be the foundation of public trust in science, making science education and communication its main pillars. Low scientific literacy levels should not discourage education and communication efforts, as they are not necessarily a good indicator of the value added in terms of fostering trust in science.
 
 Beyond science education and communication, trust in science ultimately rests on scientists producing accurate knowledge that can garner a consensus and pass the test of time. We should therefore expect that efforts at improving science methodology---the introduction of mandatory pre-registration for clinical trials for instance [@kaplanLikelihoodNullEffects2015]---will result in increases in trust in science, not only when people are aware of them [see, @songTrustingShouldersOpen2022], but also when they are not, through the generation of more accurate, robust, and consensual scientific knowledge.
+
+# Competing interest
+
+The authors declare having no competing interests.
 
 # References
 
